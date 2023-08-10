@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import Link from 'next/link'
+
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -20,8 +22,8 @@ export function PageHeader() {
     <header
       className={`fixed z-${zIdx.header} top-0 h-[${size.headerHeight}px] w-full  flex justify-between py-4 px-8`}
     >
-      <div className="flex items-center justify-between w-full h-full">
-        blanksql
+      <div className="flex items-center justify-between w-full h-full font-bold">
+        <Link href="/">_____SQL</Link>
       </div>
       <div className="flex space-x-4">
         <ThemeSwitch />
