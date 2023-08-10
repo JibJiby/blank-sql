@@ -1,9 +1,9 @@
 name: Test Code on test branch
 
 on:
-  pull_request: # push 이벤트 감지
+  pull_request:
     branches:
-      - test # test branch 한정
+      - main
 
 jobs:
   test-code:
