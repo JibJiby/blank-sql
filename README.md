@@ -22,6 +22,9 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+
+&nbsp;
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -36,3 +39,31 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+&nbsp;&nbsp;
+
+## MSW 과 같이 실행하는 방법
+
+1. .env.local 파일 생성
+
+프로젝트 최상단에 `.env.local` 파일을 생성해줍니다.
+
+```bash
+touch .env.local
+```
+
+&nbsp;
+
+2. 환경 변수 NEXT_PUBLIC_API_MOCKING 선언
+
+```bash
+echo 'NEXT_PUBLIC_API_MOCKING=enabled' > .env.local
+```
+
+3. 실행
+
+실행 스크립트를 실행합니다. 개발자 도구에 `MSW` 로 시작한 콘솔이 찍혔다면 msw가 정상적으로 돌아가는 겁니다.
+
+```bash
+npm run dev
+```
