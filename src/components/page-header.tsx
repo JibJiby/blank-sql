@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,6 +14,25 @@ import {
 
 import { size } from '@/styles/size'
 import { zIdx } from '@/styles/z-index'
+
+export function PageHeader() {
+  return (
+    <header
+      className={`fixed z-${zIdx.header} top-0 h-[${size.headerHeight}px] w-full  flex justify-between py-4 px-8`}
+    >
+      <div className="flex items-center justify-between w-full h-full">
+        blanksql
+      </div>
+      <div className="flex space-x-4">
+        <ThemeSwitch />
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      </div>
+    </header>
+  )
+}
 
 // ref : https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
 function ThemeSwitch() {
@@ -48,20 +68,5 @@ function ThemeSwitch() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
-
-export function PageHeader() {
-  return (
-    <header
-      className={`fixed z-${zIdx.header} top-0 h-[${size.headerHeight}px] w-full  flex justify-between py-4 px-8`}
-    >
-      <div className="flex items-center justify-between w-full h-full">
-        blanksql
-      </div>
-      <div className="flex">
-        <ThemeSwitch />
-      </div>
-    </header>
   )
 }
