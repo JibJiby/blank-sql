@@ -1,15 +1,19 @@
-import { Inter } from 'next/font/google'
+import { PageHeader } from '@/components/PageHeader'
 
-import { Button } from '@/components/ui/button'
-
-const inter = Inter({ subsets: ['latin'] })
+import { size } from '@/styles/size'
 
 export default function Home() {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between ${inter.className}`}
-    >
-      New Blank SQL
-    </main>
+    <>
+      <PageHeader />
+      <main
+        style={{
+          paddingTop: size.headerHeight + 5,
+        }}
+        className={`flex min-h-screen flex-col items-center justify-between`}
+      >
+        New Blank SQL
+      </main>
+    </>
   )
 }
