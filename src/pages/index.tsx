@@ -8,7 +8,7 @@ export default function Home() {
       <PageHeader />
       <main
         style={{
-          paddingTop: size.headerHeight + 5,
+          paddingTop: size.headerHeight + 15,
         }}
         className={`flex min-h-screen flex-col items-center justify-between`}
       >
