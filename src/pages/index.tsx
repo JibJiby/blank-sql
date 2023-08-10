@@ -1,8 +1,17 @@
+import { useEffect } from 'react'
+
 import { PageHeader } from '@/components/page-header'
 
 import { size } from '@/styles/size'
 
 export default function Home() {
+  useEffect(() => {
+    ;(async function () {
+      const res = await fetch('/api/user')
+      console.log(res.ok)
+    })()
+  }, [])
+
   return (
     <>
       <PageHeader />
