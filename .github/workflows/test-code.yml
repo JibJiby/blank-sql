@@ -1,7 +1,7 @@
 name: Test Code on test branch
 
 on:
-  push: # push 이벤트 감지
+  pull_request: # push 이벤트 감지
     branches:
       - test # test branch 한정
 
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - uses: actions/checkout@v2
-      - name: npm install
-        run: npm install
-      - name: run test code
+      - name: Install
+        run: npm ci
+      - name: Run test
         run: npm test
