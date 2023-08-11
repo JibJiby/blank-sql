@@ -28,8 +28,8 @@ export function PageHeader() {
       <div className="flex space-x-4">
         <ThemeSwitch />
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+          <AvatarFallback>KR</AvatarFallback>
         </Avatar>
       </div>
     </header>
