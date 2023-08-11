@@ -1,8 +1,22 @@
 import { rest } from 'msw'
+import { nanoid } from 'nanoid'
+import { z } from 'zod'
 
-const chapterListMock = [
-  { id: 1, chapterName: '기초 개념' },
-  { id: 2, chapterName: '기본 문법 SQL' },
+// TODO: model 디렉토리로 분리
+// ----
+const ChapterSchema = z.object({
+  chapterId: z.string(),
+  chapterName: z
+    .string()
+    .min(3, '최소 3글자 이상이어야 합니다')
+    .max(40, '최대 40글자 이내로 작성해야 합니다'),
+})
+type Chapter = z.infer<typeof ChapterSchema>
+// ----
+
+const chapterListMock: Array<Chapter> = [
+  { chapterId: nanoid(), chapterName: '기초 개념' },
+  { chapterId: nanoid(), chapterName: '기본 문법 SQL' },
 ]
 
 export const handlers = [
@@ -14,18 +28,30 @@ export const handlers = [
   }),
 
   /**
+   * ----------------------------------------------------
    * Chapter
+   * ----------------------------------------------------
    */
+
+  // 모든 챕터 목록
   rest.get('/api/chapter', (req, res, ctx) => {
-    // 모든 챕터 목록
     return res(ctx.status(200), ctx.json(chapterListMock))
   }),
+  // 챕터 생성
   rest.post('/api/chapter', async (req, res, ctx) => {
-    const { chapterName } = await req.json()
+    const { chapterName } = await req.json<Pick<Chapter, 'chapterName'>>()
 
-    // 챕터 생성
+    const validationResult = ChapterSchema.pick({
+      chapterName: true,
+    }).safeParse({
+      chapterName,
+    })
+    if (!validationResult.success) {
+      return res(ctx.status(400), ctx.text(validationResult.error.message))
+    }
+
     const newChapter = {
-      id: chapterListMock.length,
+      chapterId: nanoid(),
       chapterName,
     }
     chapterListMock.push(newChapter)
