@@ -20,7 +20,10 @@ import { zIdx } from '@/styles/z-index'
 export function PageHeader() {
   return (
     <header
-      className={`fixed z-${zIdx.header} top-0 h-[${size.headerHeight}px] w-full  flex justify-between py-4 px-8`}
+      style={{
+        height: size.headerHeight,
+      }}
+      className={`fixed z-${zIdx.header} top-0 w-full  flex justify-between py-4 px-8`}
     >
       <div className="flex items-center justify-between w-full h-full font-bold">
         <Link href="/">_____SQL</Link>
