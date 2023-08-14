@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+import { Toaster } from '@/components/ui/toaster'
+
 import { ThemeProvider } from '@/components/theme-provider'
 
 import { useMSW } from '@/hooks/useMSW'
@@ -27,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </QueryClientProvider>
       </main>
+      <Toaster />
     </ThemeProvider>
   )
 }
