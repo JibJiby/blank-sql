@@ -9,6 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useToast } from '@/components/ui/use-toast'
+
+import { matchAnswer } from '@/lib/match-answer'
 
 import { useSingleQuizQuery } from '@/hooks/query/useSingleQuizQuery'
 
@@ -32,8 +35,29 @@ export default function ChapterQuizResolvePage() {
   const router = useRouter()
   const [quizId, setQuizId] = useState('')
   const { data } = useSingleQuizQuery(quizId)
+  const { toast } = useToast()
 
   const onClickCopyBtn = () => navigator.clipboard.writeText(quizId)
+
+  const onClickSubmitBtn = () => {
+    toast({
+      title: 'title',
+    })
+    if (!data) {
+      return
+    }
+
+    const quizAnswerString = data.answerObj
+    const quizAnswerObj = JSON.parse(quizAnswerString)
+
+    //   // TODO: input 값을 어떻게 가져올것인가 처리해야함
+    //   if (matchAnswer(answerArray, quizAnswerObj)) {
+    //     router.push('/')
+    //     // notifySuccess('정답', '알맞게 채우셨어요!')
+    //   } else {
+    //     // notifyDanger('오답', '다시 맞춰주세요.')
+    //   }
+  }
 
   useEffect(() => {
     setQuizId(router.asPath.split('/').at(-1) || '')
@@ -66,7 +90,9 @@ export default function ChapterQuizResolvePage() {
           ))}
         </div>
         <div className="flex justify-center w-full pt-8 ">
-          <Button className="w-full">제출</Button>
+          <Button className="w-full" onClick={onClickSubmitBtn}>
+            제출
+          </Button>
         </div>
       </div>
     </BaseLayout>
