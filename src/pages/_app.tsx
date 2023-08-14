@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
 import { ThemeProvider } from '@/components/theme-provider'
 
 import { useMSW } from '@/hooks/useMSW'
@@ -8,6 +10,8 @@ import { useMSW } from '@/hooks/useMSW'
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
   const shouldRender = useMSW()
@@ -19,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <main className={inter.className}>
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </main>
     </ThemeProvider>
   )
