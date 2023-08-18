@@ -32,6 +32,11 @@ export default function SingleQuizPage() {
     if (inputRef.current) {
       inputRef.current.focus()
     }
+
+    ;(async function () {
+      const response = await fetch('/api/quiz')
+      console.log('quizes : ', await response.json())
+    })()
   }, [])
 
   return (
@@ -45,10 +50,10 @@ export default function SingleQuizPage() {
           를 입력해주세요
         </TypographyH3>
         <Input
-          type="number"
+          // type="number"
           ref={inputRef}
           className="text-center"
-          min={0}
+          // min={0}
           // defaultValue={0}
           placeholder="퀴즈 번호"
           onKeyDown={onKeyDown}
