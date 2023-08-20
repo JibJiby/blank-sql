@@ -39,10 +39,8 @@ export default function Home() {
         <CardHeader>
           <CardTitle>문제 유형</CardTitle>
           <CardDescription className="break-words">
-            하나씩 풀어보고 싶다면 &apos;퀴즈 하나만 풀기&apos; 를 선택하시면
-            됩니다!
-            <br />
-            (챕터별 문제 풀기는 현재 <u>이용할 수 없습니다</u>)
+            하나씩 풀어보고 싶다면 &apos;<strong>퀴즈 하나만 풀기</strong>&apos;
+            를 선택하시면 됩니다!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -64,14 +62,12 @@ export default function Home() {
             </Label>
             <Label
               htmlFor={chapterQuiz}
-              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary cursor-not-allowed"
+              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-primary"
             >
               <RadioGroupItem
                 value={chapterQuiz}
                 id={chapterQuiz}
                 className="sr-only"
-                // TODO: 퀴즈 하나만 풀기 이후 작업 진행 예정
-                disabled
               />
               <CheckCheck className="w-6 h-6 mb-3" />
               챕터별 문제풀기
