@@ -11,10 +11,9 @@ import { size } from '@/styles/size'
 
 interface Props {
   value?: string
-  onChange?: any
 }
 
-export function QuizViewer({ value = '', onChange }: Props) {
+export function QuizViewer({ value = '' }: Props) {
   const isClient = useCSR()
 
   if (!isClient) {
@@ -37,7 +36,6 @@ export function QuizViewer({ value = '', onChange }: Props) {
       showGutter={true}
       highlightActiveLine={true}
       readOnly={true}
-      onChange={onChange}
       value={value}
       style={{
         height: size.quizViewerHeight,
