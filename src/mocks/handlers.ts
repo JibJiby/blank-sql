@@ -14,14 +14,14 @@ const quizListMock: Array<Quiz> = [
   {
     quizId: '1',
     quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
-    answerObj: '{"0":"*"}',
+    answerObj: JSON.stringify({ 0: '*' }),
     answerLength: 1,
     priority: 50000,
   },
   {
     quizId: '2',
     quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
-    answerObj: '{"0":"*", "1", "USERS"}',
+    answerObj: JSON.stringify({ 0: '*', 1: 'USERS' }),
     answerLength: 2,
     priority: 50000,
   },
