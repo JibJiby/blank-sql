@@ -32,27 +32,19 @@ export default function SingleQuizPage() {
     if (inputRef.current) {
       inputRef.current.focus()
     }
-
-    ;(async function () {
-      const response = await fetch('/api/quiz')
-      console.log('quizes : ', await response.json())
-    })()
   }, [])
 
   return (
     <BaseLayout>
       <div className="flex flex-col space-y-8 min-w-[350px]">
         <TypographyH3 className="text-center select-none">
-          퀴즈{' '}
-          <strong className="text-accent-foreground">
-            <u>번호</u>
-          </strong>{' '}
-          를 입력해주세요
+          퀴즈 <strong className="text-accent-foreground">ID</strong> 를
+          입력해주세요
         </TypographyH3>
         <Input
           ref={inputRef}
           className="text-center"
-          placeholder="퀴즈 번호"
+          placeholder="퀴즈 ID"
           onKeyDown={onKeyDown}
         />
         <Button className="w-full" onClick={onClick}>
