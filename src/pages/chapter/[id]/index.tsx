@@ -18,22 +18,16 @@ import { isAllNotEmptyInput } from '@/lib/is'
 import { matchAnswer } from '@/lib/match-answer'
 import { makePrefixKey, range } from '@/lib/utils'
 
+import { useChapterQuizQuery } from '@/hooks/query/useChatperQuizQuery'
+
 import BaseLayout from '@/layouts/base-layout'
-import { Quiz } from '@/models/quiz'
 
 export default function ChapterQuizResolverPage() {
   const router = useRouter()
   const { toast } = useToast()
   const [sequence, setSequence] = useState(0)
   const [chapterId, setChapterId] = useState('')
-  const { data } = useQuery<Quiz[]>({
-    queryKey: ['chapter', chapterId],
-    queryFn: async () => {
-      const res = await fetch(`/api/chapter/${chapterId}`)
-      return res.json()
-    },
-    initialData: undefined,
-  })
+  const { data } = useChapterQuizQuery(chapterId)
   const inputMapRef = useRef<Map<string, string>>(new Map())
 
   // TODO: 복사 완료 메시지 띄우기
@@ -61,6 +55,7 @@ export default function ChapterQuizResolverPage() {
     if (!isAllNotEmptyInput(...Array.from(inputMapRef.current.values()))) {
       return
     }
+
     const quizAnswer = data.at(sequence)?.answerObj ?? null
     if (quizAnswer === null) return
 
