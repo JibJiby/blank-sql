@@ -1,74 +1,109 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
+import { useQuery } from '@tanstack/react-query'
 import { Copy } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Skeleton } from '@/components/ui/skeleton'
 import { useToast } from '@/components/ui/use-toast'
 
+import {
+  QUIZ_SINGLE_INPUT_PREFIX,
+  QuizSingleInput,
+} from '@/components/quiz-single-input'
+import QuizViewer from '@/components/quiz-viewer'
+
+import { isAllNotEmptyInput } from '@/lib/is'
 import { matchAnswer } from '@/lib/match-answer'
-
-import { useSingleQuizQuery } from '@/hooks/query/useSingleQuizQuery'
-
-import { size } from '@/styles/size'
+import { makePrefixKey, range } from '@/lib/utils'
 
 import BaseLayout from '@/layouts/base-layout'
+import { Quiz } from '@/models/quiz'
 
-const QuizViewer = dynamic(import('@/components/quiz-viewer'), {
-  ssr: false,
-  loading: () => (
-    <Skeleton
-      style={{
-        height: size.quizViewerHeight,
-        width: size.quizViewerWidth,
-      }}
-    />
-  ),
-})
-
-export default function ChapterQuizResolvePage() {
+export default function ChapterQuizResolverPage() {
   const router = useRouter()
-  const [quizId, setQuizId] = useState('')
-  const { data } = useSingleQuizQuery(quizId)
   const { toast } = useToast()
+  const [sequence, setSequence] = useState(0)
+  const [chapterId, setChapterId] = useState('')
+  const { data } = useQuery<Quiz[]>({
+    queryKey: ['chapter', chapterId],
+    queryFn: async () => {
+      const res = await fetch(`/api/chapter/${chapterId}`)
+      return res.json()
+    },
+    initialData: undefined,
+  })
+  const inputMapRef = useRef<Map<string, string>>(new Map())
 
-  const onClickCopyBtn = () => navigator.clipboard.writeText(quizId)
+  // TODO: 복사 완료 메시지 띄우기
+  const onClickCopyBtn = () => navigator.clipboard.writeText(chapterId)
 
-  const onClickSubmitBtn = () => {
-    toast({
-      title: 'title',
-    })
+  const onClickNext = async () => {
     if (!data) {
       return
     }
 
-    const quizAnswerString = data.answerObj
-    const quizAnswerObj = JSON.parse(quizAnswerString)
+    for (const idx of range(Number(data.at(sequence)?.answerLength))) {
+      const inputText = findInputValueByLabelNumber(idx)
 
-    //   // TODO: input 값을 어떻게 가져올것인가 처리해야함
-    //   if (matchAnswer(answerArray, quizAnswerObj)) {
-    //     router.push('/')
-    //     // notifySuccess('정답', '알맞게 채우셨어요!')
-    //   } else {
-    //     // notifyDanger('오답', '다시 맞춰주세요.')
-    //   }
+      if (!inputText) {
+        return toast({
+          title: '빠짐없이 입력해주세요',
+          variant: 'destructive',
+          duration: 1500,
+        })
+      }
+
+      inputMapRef.current.set(idx.toString(), inputText)
+    }
+
+    if (!isAllNotEmptyInput(...Array.from(inputMapRef.current.values()))) {
+      return
+    }
+    const quizAnswer = data.at(sequence)?.answerObj ?? null
+    if (quizAnswer === null) return
+
+    const answer = JSON.parse(quizAnswer)
+    if (!matchAnswer(Object.fromEntries(inputMapRef.current), answer)) {
+      toast({
+        title: '틀렸습니다',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    // 정답인 경우 reset
+    inputMapRef.current = new Map()
+
+    if (sequence + 1 === data.length) {
+      await router.push('/')
+      toast({
+        title: '전부 맞추셨습니다! 축하드립니다~',
+        className: 'bg-emerald-500',
+        duration: 1000,
+      })
+      return
+    }
+
+    setSequence((prev) => prev + 1)
+    toast({
+      title: '정답 입니다!',
+      className: 'bg-emerald-500',
+      duration: 1000,
+    })
   }
 
   useEffect(() => {
-    setQuizId(router.asPath.split('/').at(-1) || '')
+    setChapterId(router.asPath.split('/').at(-1) || '')
   }, [router])
-
-  console.log('data : ', data)
 
   return (
     <BaseLayout>
       <div className="flex items-center py-8 space-x-6">
-        <span className="select-none">퀴즈 ID : {quizId}</span>
+        <span className="select-none">
+          퀴즈 ID : {data?.at(Number(sequence))?.quizId || ''}
+        </span>
         <Button
           variant="outline"
           size="icon"
@@ -78,23 +113,42 @@ export default function ChapterQuizResolvePage() {
           <Copy width={15} height={15} />
         </Button>
       </div>
-      <QuizViewer value={data?.quizQuery} />
+      <QuizViewer value={data && data.at(Number(sequence))?.quizQuery} />
       <div className="flex flex-col items-center max-w-[240px]">
         <div className="flex flex-col items-center mt-8">
-          {/* FIXME: idx 대신 key 값 지정 */}
-          {Array.from({ length: data?.answerLength || 0 }).map((item, idx) => (
-            <div key={idx} className="flex flex-row items-center space-x-4">
-              <Label htmlFor={idx.toString()}>{idx + 1}</Label>
-              <Input id={idx.toString()} />
-            </div>
-          ))}
+          {data &&
+            Array.from({
+              length: data?.at(Number(sequence))?.answerLength || 0,
+            }).map((_, idx) => (
+              <QuizSingleInput
+                key={makePrefixKey({
+                  prefix: `${QUIZ_SINGLE_INPUT_PREFIX}_${chapterId}_${sequence}`,
+                  keyValue: (idx + 1).toString(),
+                })}
+                label={(idx + 1).toString()}
+              />
+            ))}
         </div>
         <div className="flex justify-center w-full pt-8 ">
-          <Button className="w-full" onClick={onClickSubmitBtn}>
+          <Button className="w-full" onClick={onClickNext}>
             제출
           </Button>
         </div>
       </div>
     </BaseLayout>
   )
+}
+
+function findInputValueByLabelNumber(labelNumber: number): string {
+  const inputText =
+    (
+      document.getElementById(
+        makePrefixKey({
+          prefix: QUIZ_SINGLE_INPUT_PREFIX,
+          keyValue: (labelNumber + 1).toString(),
+        })
+      ) as HTMLInputElement
+    )?.value || ''
+
+  return inputText
 }
