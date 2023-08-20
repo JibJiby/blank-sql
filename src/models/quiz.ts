@@ -5,6 +5,7 @@ export const QuizSchema = z.object({
   quizQuery: z.string(),
   answerObj: z.string(),
   answerLength: z.number(),
-  priority: z.number().optional().default(50_000),
+  priority: z.number().default(50_000).optional(),
+  chapterId: z.optional(z.string()),
 })
 export type Quiz = z.infer<typeof QuizSchema>
