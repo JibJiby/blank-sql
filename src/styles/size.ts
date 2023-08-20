@@ -4,4 +4,5 @@ export const size = {
   // quiz viewer
   quizViewerWidth: 500,
   quizViewerHeight: 300,
+  quizViewerBorderRadius: 4,
 }

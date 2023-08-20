@@ -22,7 +22,10 @@ function QuizViewer({ value = '', onChange }: Props) {
       readOnly={true}
       onChange={onChange}
       value={value}
-      style={{ height: size.quizViewerHeight }}
+      style={{
+        height: size.quizViewerHeight,
+        borderRadius: size.quizViewerBorderRadius,
+      }}
     />
   )
 }
