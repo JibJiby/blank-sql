@@ -29,8 +29,10 @@ export default function SingleQuizResolverPage() {
       <div className="flex flex-col items-center max-w-[240px]">
         <div className="flex flex-col items-center mt-8">
           {Array.from({ length: data?.answerLength || 0 }).map((_, idx) => (
-            <div key={idx} className="flex flex-row items-center space-y-4">
-              <Label htmlFor={idx.toString()}>{idx + 1}</Label>
+            <div key={idx} className="flex flex-row items-center mt-4">
+              <Label htmlFor={idx.toString()} className="p-2 select-none">
+                {idx + 1}
+              </Label>
               <Input id={idx.toString()} className="ml-4" />
             </div>
           ))}
