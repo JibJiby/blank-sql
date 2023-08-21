@@ -23,5 +23,5 @@ export function range(start: number, end?: number) {
     return Array.from({ length: start }, (_, idx) => idx)
   }
 
-  return Array.from({ length: end - start }, (_, idx) => start + idx - 1)
+  return Array.from({ length: end - start }, (_, idx) => start + idx)
 }
