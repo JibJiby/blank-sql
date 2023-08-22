@@ -70,54 +70,19 @@ export default function LoginPage() {
 
   return (
     <BaseLayout>
-      <div className="flex flex-col justify-center w-full mx-auto space-y-6">
+      <div className="flex flex-col justify-center w-[90%] min-h-[30vh] mx-auto space-y-6 border rounded-md">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">계정 생성</h1>
-          <p className="text-sm text-muted-foreground">
-            계정을 생성하시려면 이메일을 입력해주세요
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight">로그인</h1>
         </div>
 
         <div className={cn('grid gap-8', 'sm:min-w-[400px], px-[20%]')}>
-          <form onSubmit={onSubmit}>
-            <div className="grid gap-5">
-              <div className="grid gap-1">
-                <Label className="sr-only" htmlFor="email">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  placeholder="name@example.com"
-                  type="email"
-                  autoCapitalize="none"
-                  autoComplete="email"
-                  autoCorrect="off"
-                  disabled={isLoading}
-                />
-              </div>
-              <Button disabled={isLoading}>
-                {isLoading && <Spinner className="w-4 h-4 mr-2 animate-spin" />}
-                이메일로 로그인 하기
-              </Button>
-            </div>
-          </form>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="px-2 bg-background text-muted-foreground">
-                다른 방법으로 로그인
-              </span>
-            </div>
-          </div>
           <Button variant="outline" type="button" disabled={isLoading}>
             {isLoading ? (
               <Spinner className="w-4 h-4 mr-2 animate-spin" />
             ) : (
               <GoogleIcon className="w-4 h-4 mr-2" />
             )}{' '}
-            Google 로 로그인하기
+            Google 로 로그인
           </Button>
         </div>
       </div>
