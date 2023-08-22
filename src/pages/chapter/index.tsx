@@ -16,7 +16,7 @@ export default function ChapterQuizPage() {
   }
 
   const renderChapterList = (chapterList: Chapter[]) => {
-    return data.map((chapter) => (
+    return data?.map((chapter) => (
       <div
         onClick={onClickChapter(chapter.chapterId)}
         key={`chapter-${chapter.chapterId}`}
@@ -30,7 +30,7 @@ export default function ChapterQuizPage() {
   return (
     <BaseLayout>
       <div className="flex flex-col items-center space-y-8">
-        {renderChapterList(data)}
+        {data && renderChapterList(data)}
       </div>
     </BaseLayout>
   )
