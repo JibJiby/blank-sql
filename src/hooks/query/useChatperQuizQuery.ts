@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { Quiz } from '@/models/quiz'
 
+import { time } from './constants'
+
 export const useChapterQuizQuery = (chapterId: string) => {
   const query = useQuery<Quiz[]>({
     queryKey: ['chapter', chapterId],
@@ -10,7 +12,7 @@ export const useChapterQuizQuery = (chapterId: string) => {
       return res.json()
     },
     enabled: !!chapterId,
-    staleTime: 1000 * 60 * 30,
+    staleTime: time.MINUTE * 30,
     initialData: undefined,
   })
 
