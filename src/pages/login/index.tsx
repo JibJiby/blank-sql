@@ -70,7 +70,7 @@ export default function LoginPage() {
 
   return (
     <BaseLayout>
-      <div className="flex flex-col justify-center w-[90%] min-h-[30vh] mx-auto space-y-6 border rounded-md">
+      <div className="flex flex-col justify-center w-[90%] min-h-[30vh] mx-auto space-y-6 border rounded-md md:max-w-lg">
         <div className="flex flex-col space-y-2 text-center">
           <h1 className="text-2xl font-semibold tracking-tight">로그인</h1>
         </div>
