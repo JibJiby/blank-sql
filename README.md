@@ -12,6 +12,14 @@
 
 ## MSW 과 같이 실행하는 방법
 
+`before/clerk`  브랜치에서 진행해주세요
+
+```bash
+git checkout before/clerk
+```
+
+&nbsp;
+
 1. .env.local 파일 생성
 
 프로젝트 최상단에 `.env.local` 파일을 생성해줍니다.
