@@ -21,7 +21,7 @@ datasource db {
 
 model Chapter {
   id          String @id @default(cuid())
-  chapterId   String
+  chapterId   String @unique
   chapterName String
 
   createdAt DateTime @default(now()) @map(name: "created_at")
@@ -31,13 +31,13 @@ model Chapter {
 
 model Quiz {
   id           String @id @default(cuid())
-  quizId       String
+  quizId       String @unique
   quizQuery    String
   answerObj    String
   answerLength Int
   priority     Int?   @default(50000)
 
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapter   Chapter @relation(fields: [chapterId], references: [chapterId], onDelete: Cascade)
   chapterId String  @unique
 
   createdAt DateTime @default(now()) @map(name: "created_at")
