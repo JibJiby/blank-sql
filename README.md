@@ -82,7 +82,7 @@ npx prisma init --datasource-provider postgresql
 초기 세팅 cli 명령으로 .env 파일 생성되었습니다. 해당 파일에 아래 값을 넣어줍니다.
 
 ```dotenv
-DATABASE_URL=postgresql://postgres:postgres123@localhost:6500/mydb?schema=public
+DATABASE_URL="postgresql://postgres:postgres123@localhost:6500/mydb?schema=public"
 ```
 
 &nbsp;
