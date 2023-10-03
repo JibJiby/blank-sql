@@ -4,15 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watchAll",
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
     "prepare": "husky install"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.24.2",
+    "@prisma/client": "^5.3.1",
     "@radix-ui/react-avatar": "^1.0.3",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",
@@ -54,7 +56,9 @@
     "jest-environment-jsdom": "^29.6.2",
     "lint-staged": ">=10",
     "msw": "^1.2.3",
-    "prettier": "^3.0.1"
+    "prettier": "^3.0.1",
+    "prisma": "^5.3.1",
+    "ts-node": "^10.9.1"
   },
   "msw": {
     "workerDirectory": "public"
