@@ -1,16 +1,20 @@
+version: '3.9'
+
 services:
-  postgres:
-    container_name: postgres
-    image: postgres
+  db:
+    image: mysql:8.0
+    container_name: blanksql-mysql
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres123
-      - POSTGRES_DB=mydb
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=blanksql
     ports:
-      - 6500:5432
+      - 3306:3306
+    command: 
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - db_data:/var/lib/mysql
 
 
 volumes:
-  postgres_data: {}
+  db_data: {}
