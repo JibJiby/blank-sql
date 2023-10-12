@@ -13,8 +13,7 @@ export default withAuth(
 
     if (isAuthPage) {
       if (isAuth) {
-        // return NextResponse.redirect(new URL("/", req.url))
-        return NextResponse.redirect('/')
+        return NextResponse.redirect(new URL('/'))
       }
 
       return null
@@ -41,5 +40,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ['/', '/api(.*)'],
 }
