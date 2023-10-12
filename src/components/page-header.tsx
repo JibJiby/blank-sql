@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 
-import { UserButton } from '@clerk/nextjs'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -30,7 +29,6 @@ export function PageHeader() {
       </div>
       <div className="flex space-x-4">
         <ThemeSwitch />
-        <UserButton />
       </div>
     </header>
   )
