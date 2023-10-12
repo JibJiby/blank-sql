@@ -22,7 +22,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         className={cn(buttonVariants({ variant: 'outline' }))}
         onClick={() => {
           setIsGoogleLoading(true)
-          signIn('github')
+          signIn('google')
         }}
         disabled={isLoading || isGoogleLoading}
       >
