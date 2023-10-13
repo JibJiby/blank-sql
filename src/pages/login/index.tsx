@@ -1,6 +1,9 @@
+import { GetStaticProps } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 import { ChevronLeft, Command } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 
 import { buttonVariants } from '@/components/ui/button'
 
@@ -9,6 +12,13 @@ import { UserAuthForm } from '@/components/user-auth-form'
 import { cn } from '@/lib/utils'
 
 export default function LoginPage() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  if (session) {
+    return router.push('/')
+  }
+
   return (
     <div className="container flex flex-col items-center justify-center w-screen h-screen">
       <Link
