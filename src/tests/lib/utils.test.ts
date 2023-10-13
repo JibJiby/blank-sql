@@ -1,4 +1,4 @@
-import { makePrefixKey, range } from './utils'
+import { makePrefixKey, range } from '@/lib/utils'
 
 describe('makePrefixKey 함수', () => {
   it('underbar로 prefix, keyValue를 나눈다', () => {

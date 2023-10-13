@@ -1,4 +1,4 @@
-import { isAllNotEmptyInput, isEmptyObject } from './is'
+import { isAllNotEmptyInput, isEmptyObject } from '@/lib/is'
 
 describe('Test Function isAllNotEmptyInput', () => {
   it('빈 문자열이 아니면 true를 반환한다.', () => {
