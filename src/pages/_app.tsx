@@ -1,8 +1,8 @@
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 
-import { ClerkProvider } from '@clerk/nextjs'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { SessionProvider } from 'next-auth/react'
 
 import { Toaster } from '@/components/ui/toaster'
 
@@ -16,7 +16,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 const queryClient = new QueryClient()
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   const shouldRender = useMSW()
 
   if (!shouldRender) {
@@ -26,11 +29,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <main className={`w-[100vw] h-[100vh] ${inter.className}`}>
-        <QueryClientProvider client={queryClient}>
-          <ClerkProvider {...pageProps}>
+        <SessionProvider session={session}>
+          <QueryClientProvider client={queryClient}>
             <Component {...pageProps} />
-          </ClerkProvider>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </SessionProvider>
       </main>
       <Toaster />
     </ThemeProvider>

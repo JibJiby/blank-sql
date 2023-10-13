@@ -72,7 +72,7 @@ Mocking이 아닌 DB 세팅 후 실행하기 위한 절차입니다.
 * prisma 초기 세팅
 
 ```bash
-npx prisma init --datasource-provider postgresql
+npx prisma init --datasource-provider mysql
 ```
 
 &nbsp;
@@ -82,7 +82,7 @@ npx prisma init --datasource-provider postgresql
 초기 세팅 cli 명령으로 .env 파일 생성되었습니다. 해당 파일에 아래 값을 넣어줍니다.
 
 ```dotenv
-DATABASE_URL="postgresql://postgres:postgres123@localhost:6500/mydb?schema=public"
+DATABASE_URL=mysql://root:password@localhost:3306/blanksql
 ```
 
 &nbsp;
@@ -92,6 +92,8 @@ DATABASE_URL="postgresql://postgres:postgres123@localhost:6500/mydb?schema=publi
 ```bash
 docker-compose up
 ```
+
+종료할 때는 `down` 으로 정리해주면 됩니다.
 
 &nbsp;
 
