@@ -1,4 +1,3 @@
-import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -10,6 +9,9 @@ import { buttonVariants } from '@/components/ui/button'
 import { UserAuthForm } from '@/components/user-auth-form'
 
 import { cn } from '@/lib/utils'
+
+import { getServerContainer } from '@/server/container/server-container'
+import { UserService } from '@/server/services/user.service'
 
 export default function LoginPage() {
   const { data: session } = useSession()
@@ -51,4 +53,15 @@ export default function LoginPage() {
       </div>
     </div>
   )
+}
+
+export async function getServerSideProps() {
+  const container = getServerContainer()
+
+  const userService = container.resolve(UserService)
+  const users = await userService.getAllUser()
+
+  return {
+    props: {},
+  }
 }
