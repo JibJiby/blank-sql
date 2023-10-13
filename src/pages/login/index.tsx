@@ -10,9 +10,6 @@ import { UserAuthForm } from '@/components/user-auth-form'
 
 import { cn } from '@/lib/utils'
 
-import { getServerContainer } from '@/server/container/server-container'
-import { UserService } from '@/server/services/user.service'
-
 export default function LoginPage() {
   const { data: session } = useSession()
   const router = useRouter()
@@ -32,7 +29,7 @@ export default function LoginPage() {
       >
         <>
           <ChevronLeft className="w-4 h-4 mr-2" />
-          Back
+          뒤로가기
         </>
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -53,15 +50,4 @@ export default function LoginPage() {
       </div>
     </div>
   )
-}
-
-export async function getServerSideProps() {
-  const container = getServerContainer()
-
-  const userService = container.resolve(UserService)
-  const users = await userService.getAllUser()
-
-  return {
-    props: {},
-  }
 }
