@@ -7,7 +7,7 @@ import { Chapter } from '@/models/chapter'
 
 export default function ChapterQuizPage() {
   const router = useRouter()
-  const { data } = useChapterQuery()
+  const { data, isLoading, status } = useChapterQuery()
 
   const onClickChapter = (chapterId: string) => {
     return () => {
@@ -29,8 +29,8 @@ export default function ChapterQuizPage() {
 
   return (
     <BaseLayout>
-      <div className="flex flex-col items-center space-y-8">
-        {data && renderChapterList(data)}
+      <div className="flex flex-col items-center w-[85%] max-w-md space-y-8">
+        {!isLoading && status === 'success' && renderChapterList(data)}
       </div>
     </BaseLayout>
   )
