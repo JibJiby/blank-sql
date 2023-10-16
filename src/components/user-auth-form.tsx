@@ -12,19 +12,20 @@ import { cn } from '@/lib/utils'
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+
+  const handleSignIn = () => {
+    setIsGoogleLoading(true)
+    signIn('google', { callbackUrl: `${window.location.origin}/` })
+  }
 
   return (
     <div className={cn('grid gap-4 px-[10%]', className)} {...props}>
       <button
         type="button"
         className={cn(buttonVariants({ variant: 'outline' }))}
-        onClick={() => {
-          setIsGoogleLoading(true)
-          signIn('google')
-        }}
-        disabled={isLoading || isGoogleLoading}
+        onClick={handleSignIn}
+        disabled={isGoogleLoading}
       >
         {isGoogleLoading ? (
           <ChevronLeft className="w-4 h-4 mr-2 animate-spin" />
