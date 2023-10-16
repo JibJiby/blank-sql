@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { ChevronLeft, Command } from 'lucide-react'
+import { ChevronLeft, Code2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
 import { buttonVariants } from '@/components/ui/button'
@@ -39,9 +39,14 @@ export default function LoginPage() {
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <Command className="w-6 h-6 mx-auto" />
-          <h1 className="pb-4 text-2xl font-semibold tracking-tight">
-            __SQL 로그인
+          <Code2 className="w-6 h-6 mx-auto" />
+          <h1
+            className="pb-4 text-2xl font-semibold tracking-tight spacing"
+            style={{
+              wordSpacing: '10px',
+            }}
+          >
+            _____SQL 로그인
           </h1>
           <p className="text-sm text-muted-foreground">
             SNS 계정으로{' '}
