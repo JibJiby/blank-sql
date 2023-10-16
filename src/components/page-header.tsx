@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { Moon, Sun } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 
 import { Button } from '@/components/ui/button'
@@ -13,8 +14,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+import { useCSR } from '@/hooks/use-csr'
+
 import { size } from '@/styles/size'
 import { zIdx } from '@/styles/z-index'
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 export function PageHeader() {
   return (
@@ -29,6 +34,7 @@ export function PageHeader() {
       </div>
       <div className="flex space-x-4">
         <ThemeSwitch />
+        <UserNav />
       </div>
     </header>
   )
@@ -66,6 +72,39 @@ function ThemeSwitch() {
         <DropdownMenuItem onClick={() => setTheme('system')}>
           System
         </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+function UserNav() {
+  const isClientEnv = useCSR()
+  const { data } = useSession()
+
+  const handleSignOut = (e: Event) => {
+    e.preventDefault()
+    signOut({
+      callbackUrl: `${window.location.origin}/about`,
+    })
+  }
+
+  if (!isClientEnv) {
+    return null
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="w-10 h-10 cursor-pointer">
+          <AvatarImage
+            src={data?.user?.image || ''}
+            referrerPolicy="no-referrer"
+          />
+          <AvatarFallback>KR</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onSelect={handleSignOut}>로그아웃</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
