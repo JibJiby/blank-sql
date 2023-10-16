@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 interface Props {
   children: ReactNode
-  className: string
+  className?: string
 }
 
 export default function TypographyH3({ className, children }: Props) {
