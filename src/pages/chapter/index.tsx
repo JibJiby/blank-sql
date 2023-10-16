@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { useChapterQuery } from '@/hooks/query/useChapterQuery'
+import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 
 import BaseLayout from '@/layouts/base-layout'
 import { Chapter } from '@/models/chapter'

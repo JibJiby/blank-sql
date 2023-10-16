@@ -15,7 +15,7 @@ import { isAllNotEmptyInput } from '@/lib/is'
 import { matchAnswer } from '@/lib/match-answer'
 import { makePrefixKey, range } from '@/lib/utils'
 
-import { useSingleQuizQuery } from '@/hooks/query/useSingleQuizQuery'
+import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
 import BaseLayout from '@/layouts/base-layout'
 

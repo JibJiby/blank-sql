@@ -18,7 +18,7 @@ import { isAllNotEmptyInput } from '@/lib/is'
 import { matchAnswer } from '@/lib/match-answer'
 import { makePrefixKey, range } from '@/lib/utils'
 
-import { useQuizInChapterQuery } from '@/hooks/query/useQuizInChapterQuery'
+import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
 
 import BaseLayout from '@/layouts/base-layout'
 
