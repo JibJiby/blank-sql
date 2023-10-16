@@ -1,15 +1,21 @@
-import { injectable } from 'tsyringe'
+import { singleton } from 'tsyringe'
 
 import { db } from '@/lib/db'
 
-@injectable()
+@singleton()
 export class ChapterService {
-  constructor() {
-    this.getAllChapters = this.getAllChapters.bind(this)
-  }
-
-  public async getAllChapters() {
+  public getAllChapters = async () => {
     const chapters = await db.chapter.findMany()
     return chapters
+  }
+
+  public findQuizzesByChapterId = async (chapterId: string) => {
+    const quizzes = db.quiz.findMany({
+      where: {
+        chapterId,
+      },
+    })
+
+    return quizzes
   }
 }

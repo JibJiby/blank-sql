@@ -10,12 +10,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'GET') {
-    const chapters = await chapterService.getAllChapters()
-    return res.status(200).json(chapters)
-  } else if (req.method === 'POST') {
-    // ...
+  const { chapterId } = req.query
+  if (!chapterId || chapterId instanceof Array) {
+    return res.status(400)
   }
 
-  return res.status(400)
+  const quizzes = chapterService.findQuizzesByChapterId(chapterId)
+
+  res.status(200).json(quizzes)
 }

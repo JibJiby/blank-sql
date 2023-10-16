@@ -2,17 +2,17 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { container } from 'tsyringe'
 
-import { ChapterService } from '@/server/services/chapter.service'
+import { QuizService } from '@/server/services/quiz.service'
 
-const chapterService = container.resolve(ChapterService)
+const quizService = container.resolve(QuizService)
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const chapters = await chapterService.getAllChapters()
-    return res.status(200).json(chapters)
+    const quizzes = await quizService.getAllQuizzes()
+    return res.status(200).json(quizzes)
   } else if (req.method === 'POST') {
     // ...
   }
