@@ -4,45 +4,40 @@ import { Chapter } from '@/models/chapter'
 import { Quiz } from '@/models/quiz'
 
 const chapterListMock: Array<Chapter> = [
-  { chapterId: '1', chapterName: '기초 개념' },
-  { chapterId: '2', chapterName: 'SELECT와 FROM' },
-  { chapterId: '3', chapterName: 'WHERE 으로 원하는 데이터만 가져오기' },
+  { id: '1', chapterName: '기초 개념' },
+  { id: '2', chapterName: 'SELECT와 FROM' },
+  { id: '3', chapterName: 'WHERE 으로 원하는 데이터만 가져오기' },
 ]
 
 const quizListMock: Array<Quiz> = [
   {
-    quizId: '1',
-    quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
-    answerObj: JSON.stringify({ 0: '*' }),
-    answerLength: 1,
+    id: '1',
+    quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
+    answer: JSON.stringify({ 0: '*' }),
     chapterId: '1',
   },
   {
-    quizId: '2',
-    quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
-    answerObj: JSON.stringify({ 0: '*', 1: 'USERS' }),
-    answerLength: 2,
+    id: '2',
+    quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
+    answer: JSON.stringify({ 0: '*', 1: 'USERS' }),
     chapterId: '1',
   },
   {
-    quizId: '3',
-    quizQuery: '____\n\t*\nFROM\n\tMY_DB.USERS',
-    answerObj: JSON.stringify({ 0: 'SELECT' }),
-    answerLength: 1,
+    id: '3',
+    quiz: '____\n\t*\nFROM\n\tMY_DB.USERS',
+    answer: JSON.stringify({ 0: 'SELECT' }),
     chapterId: '2',
   },
   {
-    quizId: '4',
-    quizQuery: '____\n\t*\n____\n\tMY_DB.USERS',
-    answerObj: JSON.stringify({ 0: 'SELECT', 1: 'FROM' }),
-    answerLength: 2,
+    id: '4',
+    quiz: '____\n\t*\n____\n\tMY_DB.USERS',
+    answer: JSON.stringify({ 0: 'SELECT', 1: 'FROM' }),
     chapterId: '2',
   },
   {
-    quizId: '5',
-    quizQuery: 'SELECT\n\t*\nFROM\n\tMY_DB.USERS WHERE AGE ____ 20',
-    answerObj: JSON.stringify({ 0: '=' }),
-    answerLength: 1,
+    id: '5',
+    quiz: 'SELECT\n\t*\nFROM\n\tMY_DB.USERS WHERE AGE ____ 20',
+    answer: JSON.stringify({ 0: '=' }),
     chapterId: '3',
   },
 ]
@@ -75,7 +70,7 @@ export const handlers = [
   rest.get('/api/quiz/:id', (req, res, ctx) => {
     const { id } = req.params
 
-    const foundQuizIdx = quizListMock.findIndex((quiz) => quiz.quizId === id)
+    const foundQuizIdx = quizListMock.findIndex((quiz) => quiz.id === id)
     if (foundQuizIdx === -1) {
       return res(ctx.status(403))
     }
