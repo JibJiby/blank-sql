@@ -14,8 +14,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { useCSR } from '@/hooks/use-csr'
-
 import { size } from '@/styles/size'
 import { zIdx } from '@/styles/z-index'
 
@@ -78,7 +76,7 @@ function ThemeSwitch() {
 }
 
 function UserNav() {
-  const isClientEnv = useCSR()
+  const [noImg, setNoImg] = useState(false)
   const { data } = useSession()
 
   const handleSignOut = (e: Event) => {
@@ -88,9 +86,11 @@ function UserNav() {
     })
   }
 
-  if (!isClientEnv) {
-    return null
-  }
+  useEffect(() => {
+    setTimeout(() => {
+      setNoImg(true)
+    }, 1500)
+  }, [])
 
   return (
     <DropdownMenu>
@@ -100,7 +100,7 @@ function UserNav() {
             src={data?.user?.image || ''}
             referrerPolicy="no-referrer"
           />
-          <AvatarFallback>KR</AvatarFallback>
+          {noImg && <AvatarFallback>KR</AvatarFallback>}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
