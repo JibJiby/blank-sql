@@ -1,10 +1,9 @@
 import { z } from 'zod'
 
 export const QuizSchema = z.object({
-  quizId: z.string(),
-  quizQuery: z.string(),
-  answerObj: z.string(),
-  answerLength: z.number(),
+  id: z.string(),
+  quiz: z.string(),
+  answer: z.string(),
   priority: z.number().default(50_000).optional(),
   chapterId: z.optional(z.string()),
 })

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 
-import { useQuery } from '@tanstack/react-query'
 import { Copy } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -18,27 +18,35 @@ import { isAllNotEmptyInput } from '@/lib/is'
 import { matchAnswer } from '@/lib/match-answer'
 import { makePrefixKey, range } from '@/lib/utils'
 
-import { useChapterQuizQuery } from '@/hooks/query/useChatperQuizQuery'
+import { useQuizInChapterQuery } from '@/hooks/query/useQuizInChapterQuery'
 
 import BaseLayout from '@/layouts/base-layout'
 
-export default function ChapterQuizResolverPage() {
+export default function ChapterQuizResolverPage({
+  chapterId,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
   const { toast } = useToast()
   const [sequence, setSequence] = useState(0)
-  const [chapterId, setChapterId] = useState('')
-  const { data } = useChapterQuizQuery(chapterId)
+  const {
+    data: quizzesInChapter,
+    status,
+    error,
+  } = useQuizInChapterQuery(chapterId)
+  const answerLength =
+    quizzesInChapter?.length && status === 'success' && !error
+      ? Object.keys(JSON.parse(quizzesInChapter[sequence].answer || '')).length
+      : 0
   const inputMapRef = useRef<Map<string, string>>(new Map())
 
-  // TODO: 복사 완료 메시지 띄우기
   const onClickCopyBtn = () => navigator.clipboard.writeText(chapterId)
 
   const onClickNext = async () => {
-    if (!data) {
+    if (!quizzesInChapter?.length) {
       return
     }
 
-    for (const idx of range(Number(data.at(sequence)?.answerLength))) {
+    for (const idx of range(answerLength)) {
       const inputText = findInputValueByLabelNumber(idx)
 
       if (!inputText) {
@@ -56,7 +64,7 @@ export default function ChapterQuizResolverPage() {
       return
     }
 
-    const quizAnswer = data.at(sequence)?.answerObj ?? null
+    const quizAnswer = quizzesInChapter.at(sequence)?.answer ?? null
     if (quizAnswer === null) return
 
     const answer = JSON.parse(quizAnswer)
@@ -71,12 +79,12 @@ export default function ChapterQuizResolverPage() {
     // 정답인 경우 reset
     inputMapRef.current = new Map()
 
-    if (sequence + 1 === data.length) {
+    if (sequence + 1 === quizzesInChapter.length) {
       await router.push('/')
       toast({
         title: '전부 맞추셨습니다! 축하드립니다~',
         className: 'bg-emerald-500',
-        duration: 1000,
+        duration: 1200,
       })
       return
     }
@@ -89,15 +97,19 @@ export default function ChapterQuizResolverPage() {
     })
   }
 
-  useEffect(() => {
-    setChapterId(router.asPath.split('/').at(-1) || '')
-  }, [router])
+  if (status === 'loading' || status !== 'success') {
+    return
+  }
+
+  if (!quizzesInChapter.length) {
+    return
+  }
 
   return (
     <BaseLayout>
       <div className="flex items-center py-8 space-x-6">
         <span className="select-none">
-          퀴즈 ID : {data?.at(Number(sequence))?.quizId || ''}
+          퀴즈 ID : {quizzesInChapter.at(sequence)?.id || ''}
         </span>
         <Button
           variant="outline"
@@ -108,21 +120,20 @@ export default function ChapterQuizResolverPage() {
           <Copy width={15} height={15} />
         </Button>
       </div>
-      <QuizViewer value={data && data.at(Number(sequence))?.quizQuery} />
+      <QuizViewer value={quizzesInChapter.at(sequence)?.quiz} />
       <div className="flex flex-col items-center max-w-[240px]">
         <div className="flex flex-col items-center mt-8">
-          {data &&
-            Array.from({
-              length: data?.at(Number(sequence))?.answerLength || 0,
-            }).map((_, idx) => (
-              <QuizSingleInput
-                key={makePrefixKey({
-                  prefix: `${QUIZ_SINGLE_INPUT_PREFIX}_${chapterId}_${sequence}`,
-                  keyValue: (idx + 1).toString(),
-                })}
-                label={(idx + 1).toString()}
-              />
-            ))}
+          {Array.from({
+            length: answerLength || 0,
+          }).map((_, idx) => (
+            <QuizSingleInput
+              key={makePrefixKey({
+                prefix: `${QUIZ_SINGLE_INPUT_PREFIX}_${chapterId}_${sequence}`,
+                keyValue: (idx + 1).toString(),
+              })}
+              label={(idx + 1).toString()}
+            />
+          ))}
         </div>
         <div className="flex justify-center w-full pt-8 ">
           <Button className="w-full" onClick={onClickNext}>
@@ -147,3 +158,10 @@ function findInputValueByLabelNumber(labelNumber: number): string {
 
   return inputText
 }
+
+export const getServerSideProps = (async (context) => {
+  const chapterId = context.query.id as string
+  return { props: { chapterId } }
+}) satisfies GetServerSideProps<{
+  chapterId: string
+}>

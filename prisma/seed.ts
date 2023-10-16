@@ -1,58 +1,51 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 // TODO: 원하시는 seeding 처리로 변경하시면 됩니다.
 async function main() {
-  // const firstUser = await prisma.user.findFirst({
-  //   where: {
-  //     email: {
-  //       startsWith: 'newblanksql',
-  //     },
-  //   },
-  // })
+  const newChapterListResult: string[] = []
+  const seededChapterList: Prisma.ChapterCreateArgs['data'][] = [
+    { chapterName: '기초 SQL 다지기' },
+    { chapterName: 'WHERE 으로 원하는 데이터만 가져오기' },
+  ]
 
-  // if (firstUser) {
-  //   const randomId = Math.random().toString(36).substring(2, 11)
-  //   const user = await prisma.user.create({
-  //     data: {
-  //       email: `${randomId}@newblanksql.io`,
-  //     },
-  //   })
-  //   console.log(user)
-  // } else {
-  //   const user = await prisma.user.create({
-  //     data: {
-  //       email: 'newblanksql@newblanksql.io',
-  //     },
-  //   })
-  //   console.log(user)
-  // }
+  for await (const newChapter of seededChapterList) {
+    const result = await prisma.chapter.create({
+      data: newChapter,
+    })
+    newChapterListResult.push(result.id)
+  }
+  console.log('-'.repeat(15), 'seededChapterList', '-'.repeat(15))
+  console.log(seededChapterList)
 
-  // --------------------------------------------------------------
-
-  const newChapterID = Math.random().toString(36).substring(2, 11)
-
-  const chapter = await prisma.chapter.create({
-    data: {
-      chapterId: newChapterID,
-      chapterName: '기초',
+  // -------------------------------------------------------------
+  const seededQuizList: Prisma.QuizCreateArgs['data'][] = [
+    {
+      quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
+      answer: JSON.stringify({ 0: '*' }),
+      chapterId: newChapterListResult[0],
     },
-  })
-  console.log('chapter')
-  console.log(chapter)
-
-  const quiz = await prisma.quiz.create({
-    data: {
-      quizId: '1',
-      quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
-      answerObj: JSON.stringify({ 0: '*' }),
-      answerLength: 1,
-      chapterId: newChapterID,
+    {
+      quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
+      answer: JSON.stringify({ 0: '*', 1: 'USERS' }),
+      chapterId: newChapterListResult[0],
     },
-  })
-  console.log('quiz')
-  console.log(quiz)
+    {
+      quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
+      answer: JSON.stringify({ 0: '*', 1: 'USERS' }),
+      chapterId: newChapterListResult[1],
+    },
+  ]
+
+  for await (const newQuiz of seededQuizList) {
+    await prisma.quiz.create({
+      data: newQuiz,
+    })
+  }
+
+  console.log('-'.repeat(15), 'seededQuizList', '-'.repeat(15))
+  console.log(seededQuizList)
 }
 
 main()

@@ -150,3 +150,20 @@ yarn seed
 ```
 
 &nbsp;&nbsp;
+
+## TroubleShooting
+
+* decorator 관련 prettier import sort
+
+`.prettierrc` 옵션 ()
+
+```json
+{
+	 "importOrderParserPlugins": ["typescript", "decorators-legacy", "jsx"],
+}
+```
+
+순서 중요함 (이외에도 decorator 관련 tsconfig 설정 필수!)
+
+
+

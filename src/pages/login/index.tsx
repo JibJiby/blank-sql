@@ -1,4 +1,3 @@
-import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -12,8 +11,13 @@ import { UserAuthForm } from '@/components/user-auth-form'
 import { cn } from '@/lib/utils'
 
 export default function LoginPage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
+
+  if (status === 'loading') {
+    // NOTE: For error "React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary"
+    return null
+  }
 
   if (session) {
     return router.push('/')
@@ -30,7 +34,7 @@ export default function LoginPage() {
       >
         <>
           <ChevronLeft className="w-4 h-4 mr-2" />
-          Back
+          뒤로가기
         </>
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -42,9 +46,9 @@ export default function LoginPage() {
           <p className="text-sm text-muted-foreground">
             SNS 계정으로{' '}
             <strong>
-              <u>5초 만에</u>
-            </strong>{' '}
-            이용해보세요
+              <u>5초 만에 시작</u>
+            </strong>
+            해보세요
           </p>
         </div>
         <UserAuthForm />

@@ -21,16 +21,21 @@ import BaseLayout from '@/layouts/base-layout'
 
 export default function SingleQuizResolverPage() {
   const router = useRouter()
-  const { data } = useSingleQuizQuery(router.asPath.at(-1) || '')
+  const singleQuizId = router.query.id as string
+  const { data, status, error } = useSingleQuizQuery(singleQuizId)
+  const answerLength =
+    data?.answer && status === 'success' && !error
+      ? Object.keys(JSON.parse(data.answer || '')).length
+      : 0
   const inputMapRef = useRef<Map<string, string>>(new Map())
   const { toast } = useToast()
 
   const onSubmit = async () => {
-    if (!data || !data?.answerLength || isNaN(Number(data?.answerLength))) {
+    if (!data) {
       return
     }
 
-    for (const idx of range(Number(data.answerLength))) {
+    for (const idx of range(answerLength)) {
       const inputText = findInputValueByLabelNumber(idx)
 
       if (!inputText) {
@@ -48,7 +53,7 @@ export default function SingleQuizResolverPage() {
       return
     }
 
-    const quizAnswer = data.answerObj ?? null
+    const quizAnswer = data.answer ?? null
     if (quizAnswer === null) return
 
     const answer = JSON.parse(quizAnswer)
@@ -68,13 +73,17 @@ export default function SingleQuizResolverPage() {
     })
   }
 
+  if (status === 'loading' || status !== 'success') {
+    return
+  }
+
   return (
     <BaseLayout>
-      <QuizViewer value={data?.quizQuery} />
+      <QuizViewer value={data.quiz} />
       <div className="flex flex-col items-center max-w-[240px]">
         <div className="flex flex-col items-center mt-8">
           {data &&
-            Array.from({ length: data.answerLength }).map((_, idx) => (
+            Array.from({ length: answerLength }).map((_, idx) => (
               <QuizSingleInput
                 key={makePrefixKey({
                   prefix: QUIZ_SINGLE_INPUT_PREFIX,

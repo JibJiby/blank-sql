@@ -6,6 +6,8 @@
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrder": [
+    "reflect-metadata",
+
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",
     "^(react-ace/(.*)$)|^(react-ace$)",
@@ -25,6 +27,7 @@
     "^[./]",
     "^[../]"
   ],
+  "importOrderParserPlugins": ["typescript", "decorators-legacy", "jsx"],
 
   "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }
