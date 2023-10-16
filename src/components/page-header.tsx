@@ -6,18 +6,19 @@ import { Moon, Sun } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
 import { size } from '@/styles/size'
 import { zIdx } from '@/styles/z-index'
-
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
 export function PageHeader() {
   return (
@@ -88,14 +89,16 @@ function UserNav() {
 
   useEffect(() => {
     setTimeout(() => {
-      setNoImg(true)
+      if (!data?.user?.image) {
+        setNoImg(true)
+      }
     }, 1500)
-  }, [])
+  }, [data])
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="w-10 h-10 cursor-pointer">
+        <Avatar className="w-10 h-10 border cursor-pointer">
           <AvatarImage
             src={data?.user?.image || ''}
             referrerPolicy="no-referrer"
@@ -103,7 +106,18 @@ function UserNav() {
           {noImg && <AvatarFallback>KR</AvatarFallback>}
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="mr-4">
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium leading-none">
+              {data?.user?.name}
+            </p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {data?.user?.email || ''}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={handleSignOut}>로그아웃</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
