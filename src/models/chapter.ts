@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const ChapterSchema = z.object({
-  chapterId: z.string(),
+  id: z.string(),
   chapterName: z
     .string()
     .min(3, '최소 3글자 이상이어야 합니다')

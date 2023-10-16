@@ -4,11 +4,9 @@ const prisma = new PrismaClient()
 
 // TODO: 원하시는 seeding 처리로 변경하시면 됩니다.
 async function main() {
-  const newChapterID = Math.random().toString(36).substring(2, 11)
-
   const chapter = await prisma.chapter.create({
     data: {
-      chapterName: '기초',
+      chapterName: '기초 SQL 다지기',
     },
   })
   console.log('chapter')
@@ -16,15 +14,24 @@ async function main() {
 
   const quiz = await prisma.quiz.create({
     data: {
-      quizQuery: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
-      answerObj: JSON.stringify({ 0: '*' }),
-      // TODO: 추후 제거
-      answerLength: 1,
-      chapterId: newChapterID,
+      quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.USERS',
+      answer: JSON.stringify({ 0: '*' }), // '{"0": "*"}'
+      chapterId: chapter.id,
     },
   })
   console.log('quiz')
   console.log(quiz)
+
+  const quiz02 = await prisma.quiz.create({
+    data: {
+      quiz: 'SELECT\n\t____\nFROM\n\tMY_DB.____',
+      answer: JSON.stringify({ 0: '*', 1: 'USERS' }),
+      chapterId: chapter.id,
+    },
+  })
+
+  console.log('quiz02')
+  console.log(quiz02)
 }
 
 main()

@@ -67,15 +67,13 @@ CREATE TABLE `Chapter` (
 -- CreateTable
 CREATE TABLE `Quiz` (
     `id` VARCHAR(191) NOT NULL,
-    `quizQuery` VARCHAR(191) NOT NULL,
-    `answerObj` VARCHAR(191) NOT NULL,
-    `answerLength` INTEGER NOT NULL,
+    `quiz` VARCHAR(191) NOT NULL,
+    `answer` VARCHAR(191) NOT NULL,
     `priority` INTEGER NULL DEFAULT 50000,
     `chapterId` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `Quiz_chapterId_key`(`chapterId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

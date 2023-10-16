@@ -80,14 +80,13 @@ model Chapter {
 }
 
 model Quiz {
-  id           String @id @default(cuid())
-  quizQuery    String
-  answerObj    String
-  answerLength Int
-  priority     Int?   @default(50000)
+  id       String @id @default(cuid())
+  quiz     String
+  answer   String
+  priority Int?   @default(50000)
 
   chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  chapterId String  @unique
+  chapterId String
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
