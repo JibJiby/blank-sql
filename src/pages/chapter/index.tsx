@@ -9,17 +9,21 @@ export default function ChapterQuizPage() {
   const router = useRouter()
   const { data, isLoading, status } = useChapterQuery()
 
-  const onClickChapter = (chapterId: string) => {
+  const handleChapterIdInput = (chapterId: string) => {
     return () => {
       router.push(router.asPath + `/${chapterId}`)
     }
   }
 
   const renderChapterList = (chapterList: Chapter[]) => {
-    return data?.map((chapter) => (
+    if (!chapterList.length) {
+      return
+    }
+
+    return chapterList.map((chapter) => (
       <div
-        onClick={onClickChapter(chapter.chapterId)}
-        key={`chapter-${chapter.chapterId}`}
+        onClick={handleChapterIdInput(chapter.id)}
+        key={`chapter-${chapter.id}`}
         className="w-full px-4 py-6 font-semibold text-center transition-all ease-in border rounded-md cursor-pointer hover:bg-secondary"
       >
         {chapter.chapterName}
@@ -27,10 +31,14 @@ export default function ChapterQuizPage() {
     ))
   }
 
+  if (isLoading || status !== 'success') {
+    return
+  }
+
   return (
     <BaseLayout>
       <div className="flex flex-col items-center w-[85%] max-w-md space-y-8">
-        {!isLoading && status === 'success' && renderChapterList(data)}
+        {renderChapterList(data)}
       </div>
     </BaseLayout>
   )
