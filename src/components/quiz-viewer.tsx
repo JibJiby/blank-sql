@@ -5,7 +5,7 @@ import 'ace-builds/src-noconflict/theme-monokai'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { useCSR } from '@/hooks/useCSR'
+import { useCSR } from '@/hooks/use-csr'
 
 import { size } from '@/styles/size'
 

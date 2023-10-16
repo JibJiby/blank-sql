@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/toaster'
 
 import { ThemeProvider } from '@/components/theme-provider'
 
-import { useMSW } from '@/hooks/useMSW'
+import { useMSW } from '@/hooks/use-msw'
 
 import '@/styles/globals.css'
 
