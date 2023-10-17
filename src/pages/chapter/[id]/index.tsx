@@ -38,7 +38,10 @@ export default function ChapterQuizResolverPage() {
       : 0
   const inputMapRef = useRef<Map<string, string>>(new Map())
 
-  const onClickCopyBtn = () => navigator.clipboard.writeText(chapterId)
+  const onClickCopyBtn = () =>
+    quizzesInChapter &&
+    answerLength &&
+    navigator.clipboard.writeText(quizzesInChapter[sequence].id)
 
   const onClickNext = async () => {
     if (!quizzesInChapter?.length) {
