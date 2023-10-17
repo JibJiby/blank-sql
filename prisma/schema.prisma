@@ -6,9 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  // relationMode = "prisma" // planetscale 경우 사용
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma" // planetscale 경우 사용
 }
 
 //

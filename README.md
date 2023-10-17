@@ -149,6 +149,24 @@ npx prisma studio
 yarn seed
 ```
 
+
+
+## Planetscale
+
+planetscale 에서 DB 생성 후 .env 를 수정한 다음에
+
+```bash
+npx prisma db push
+```
+
+하면 아래와 같이 생성된걸 확인할 수 있다.
+
+
+
+<img src="/Users/jiby/Documents/GitHub/nextjs/next-proj/blanksql/blanksql-front/assets/image-20231017173346118.png" alt="planetscale-tables" style="zoom:50%;" />
+
+
+
 &nbsp;&nbsp;
 
 ## TroubleShooting
