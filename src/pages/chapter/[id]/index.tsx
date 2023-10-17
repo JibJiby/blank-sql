@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
 
 import { Copy } from 'lucide-react'
@@ -22,10 +21,10 @@ import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
 
 import BaseLayout from '@/layouts/base-layout'
 
-export default function ChapterQuizResolverPage({
-  chapterId,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ChapterQuizResolverPage() {
   const router = useRouter()
+  const { id } = router.query
+  const [chapterId, setChapterId] = useState('')
   const { toast } = useToast()
   const [sequence, setSequence] = useState(0)
   const {
@@ -97,6 +96,13 @@ export default function ChapterQuizResolverPage({
     })
   }
 
+  useEffect(() => {
+    if (!id) {
+      return
+    }
+    setChapterId(id as string)
+  }, [id])
+
   if (status === 'loading' || status !== 'success') {
     return
   }
@@ -158,13 +164,3 @@ function findInputValueByLabelNumber(labelNumber: number): string {
 
   return inputText
 }
-
-export const getServerSideProps = (async (context) => {
-  const chapterId = context.query.id as string
-  console.log('-'.repeat(10))
-  console.log(context.query)
-  console.log('-'.repeat(10))
-  return { props: { chapterId } }
-}) satisfies GetServerSideProps<{
-  chapterId: string
-}>
