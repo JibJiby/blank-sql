@@ -18,4 +18,12 @@ export class ChapterService {
 
     return quizzes
   }
+
+  public getChaptersPagination = async (skip: number, size: number) => {
+    const chapters = db.chapter.findMany({
+      skip: 0,
+      take: size,
+    })
+    return chapters
+  }
 }
