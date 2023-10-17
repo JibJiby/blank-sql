@@ -161,6 +161,9 @@ function findInputValueByLabelNumber(labelNumber: number): string {
 
 export const getServerSideProps = (async (context) => {
   const chapterId = context.query.id as string
+  console.log('-'.repeat(10))
+  console.log(context.query)
+  console.log('-'.repeat(10))
   return { props: { chapterId } }
 }) satisfies GetServerSideProps<{
   chapterId: string
