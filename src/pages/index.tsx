@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { Check, CheckCheck } from 'lucide-react'
@@ -57,6 +58,7 @@ export default function Home() {
               />
               <Check className="w-6 h-6 mb-3" />
               퀴즈 하나만 풀기
+              <Link href="/single" className="invisible w-0 h-0" />
             </Label>
             <Label
               htmlFor={chapterQuiz}
@@ -69,6 +71,7 @@ export default function Home() {
               />
               <CheckCheck className="w-6 h-6 mb-3" />
               챕터별 문제풀기
+              <Link href="/chapter" className="invisible w-0 h-0" />
             </Label>
           </RadioGroup>
         </CardContent>
