@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma" // planetscale 경우 사용
+  relationMode = "prisma"
 }
 
 //
@@ -32,6 +32,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
   @@map(name: "accounts")
 }
 
@@ -42,6 +43,7 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map(name: "sessions")
 }
 
@@ -90,4 +92,6 @@ model Quiz {
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@index([chapterId])
 }
