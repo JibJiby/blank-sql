@@ -1,13 +1,17 @@
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
 
-import { useChapterQuery } from '@/hooks/query/use-chapter-query'
+import { container } from 'tsyringe'
 
 import BaseLayout from '@/layouts/base-layout'
 import { Chapter } from '@/models/chapter'
+import { ChapterService } from '@/server/services/chapter.service'
 
-export default function ChapterQuizPage() {
+export default function ChapterQuizPage({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
-  const { data, isLoading, status } = useChapterQuery()
+  const chapters = JSON.parse(data)
 
   const handleChapterIdInput = (chapterId: string) => {
     return () => {
@@ -31,15 +35,25 @@ export default function ChapterQuizPage() {
     ))
   }
 
-  if (isLoading || status !== 'success') {
-    return
-  }
-
   return (
     <BaseLayout>
       <div className="flex flex-col items-center w-[85%] max-w-md space-y-8">
-        {renderChapterList(data)}
+        {renderChapterList(chapters)}
       </div>
     </BaseLayout>
   )
 }
+
+export const getStaticProps = (async () => {
+  const chapterService = container.resolve(ChapterService)
+  const chapters = await chapterService.getAllChapters()
+
+  return {
+    props: {
+      data: JSON.stringify(chapters),
+    },
+  }
+}) satisfies GetStaticProps<{
+  // data: Chapter[]
+  data: string
+}>
