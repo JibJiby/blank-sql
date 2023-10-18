@@ -16,7 +16,13 @@ import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 export default function App({
   Component,
