@@ -5,6 +5,12 @@ import { useRouter } from 'next/router'
 import { Copy } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { useToast } from '@/components/ui/use-toast'
 
 import {
@@ -38,10 +44,11 @@ export default function ChapterQuizResolverPage() {
       : 0
   const inputMapRef = useRef<Map<string, string>>(new Map())
 
-  const onClickCopyBtn = () =>
-    quizzesInChapter &&
-    answerLength &&
-    navigator.clipboard.writeText(quizzesInChapter[sequence].id)
+  const onClickCopyBtn = () => {
+    if (quizzesInChapter && answerLength) {
+      navigator.clipboard.writeText(quizzesInChapter[sequence].id)
+    }
+  }
 
   const onClickNext = async () => {
     if (!quizzesInChapter?.length) {
@@ -120,14 +127,7 @@ export default function ChapterQuizResolverPage() {
         <span className="select-none">
           퀴즈 ID : {quizzesInChapter.at(sequence)?.id || ''}
         </span>
-        <Button
-          variant="outline"
-          size="icon"
-          className="w-[30px] h-[30px]"
-          onClick={onClickCopyBtn}
-        >
-          <Copy width={15} height={15} />
-        </Button>
+        <CopyButton handler={onClickCopyBtn} />
       </div>
       <QuizViewer value={quizzesInChapter.at(sequence)?.quiz} />
       <div className="flex flex-col items-center max-w-[240px]">
@@ -166,4 +166,31 @@ function findInputValueByLabelNumber(labelNumber: number): string {
     )?.value || ''
 
   return inputText
+}
+
+function CopyButton({ handler }: { handler: () => void }) {
+  return (
+    <TooltipProvider
+      delayDuration={0}
+      skipDelayDuration={300}
+      disableHoverableContent
+    >
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="w-[30px] h-[30px]"
+            onClick={handler}
+          >
+            <Copy width={15} height={15} />
+          </Button>
+        </TooltipTrigger>
+
+        <TooltipContent>
+          <p>복사하기</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
 }
