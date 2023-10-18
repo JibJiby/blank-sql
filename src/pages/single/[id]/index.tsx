@@ -1,10 +1,6 @@
 import { useRef } from 'react'
 
-import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
-
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
-import { container } from 'tsyringe'
 
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
@@ -22,7 +18,6 @@ import { makePrefixKey, range } from '@/lib/utils'
 import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
 import BaseLayout from '@/layouts/base-layout'
-import { QuizService } from '@/server/services/quiz.service'
 
 export default function SingleQuizResolverPage() {
   const router = useRouter()
@@ -122,22 +117,23 @@ function findInputValueByLabelNumber(labelNumber: number): string {
   return inputText
 }
 
-export const getServerSideProps = (async (context) => {
-  // 직접 접근시 해당 데이터 없을 때,
-  const quizId = context.query.id as string
-  const quizService = container.resolve(QuizService)
+// // FIXME: Server RunTimeError (EMFILE: too many open files ...)
+// export const getServerSideProps = (async (context) => {
+//   // 직접 접근시 해당 데이터 없을 때,
+//   const quizId = context.query.id as string
+//   const quizService = container.resolve(QuizService)
 
-  try {
-    await quizService.findQuizById(quizId)
-  } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
-      return {
-        notFound: true,
-      }
-    }
-  }
+//   try {
+//     await quizService.findQuizById(quizId)
+//   } catch (err) {
+//     if (err instanceof PrismaClientKnownRequestError) {
+//       return {
+//         notFound: true,
+//       }
+//     }
+//   }
 
-  return {
-    props: {},
-  }
-}) satisfies GetServerSideProps<{}>
+//   return {
+//     props: {},
+//   }
+// }) satisfies GetServerSideProps<{}>
