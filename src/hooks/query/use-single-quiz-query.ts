@@ -11,6 +11,7 @@ export const useSingleQuizQuery = (quizId: string) => {
       const res = await api(`/quiz/${quizId}`)
       return res.data
     },
+    enabled: quizId !== undefined,
     initialData: undefined,
   })
 
