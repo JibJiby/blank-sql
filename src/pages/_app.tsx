@@ -3,25 +3,15 @@ import 'reflect-metadata'
 import type { AppProps } from 'next/app'
 import { Inter } from 'next/font/google'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'sonner'
 
-import { ThemeProvider } from '@/components/theme-provider'
+import { AppProvider } from '@/components/app-provider'
 
 import { useMSW } from '@/hooks/use-msw'
 
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
 
 export default function App({
   Component,
@@ -34,15 +24,13 @@ export default function App({
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <main className={`w-[100vw] h-[100vh] ${inter.className}`}>
-        <SessionProvider session={session}>
-          <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
-          </QueryClientProvider>
-        </SessionProvider>
-      </main>
+    <>
+      <AppProvider session={session}>
+        <main className={`w-[100vw] h-[100vh] ${inter.className}`}>
+          <Component {...pageProps} />
+        </main>
+      </AppProvider>
       <Toaster richColors />
-    </ThemeProvider>
+    </>
   )
 }
