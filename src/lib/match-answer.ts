@@ -1,6 +1,4 @@
-type QuizAnswer = {
-  [key: string]: string
-}
+export type QuizAnswer = Record<string, string>
 
 export const matchAnswer = (userObj: QuizAnswer, answerObj: QuizAnswer) => {
   if (answerObj === null) {
