@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from 'sonner'
 
 import { QuizInputForm } from '@/components/quiz-input-form'
 import QuizViewer from '@/components/quiz-viewer'
@@ -13,21 +13,17 @@ export default function SingleQuizResolverPage() {
   const router = useRouter()
   const singleQuizId = router.query.id as string
   const { data, status } = useSingleQuizQuery(singleQuizId)
-  const { toast } = useToast()
 
   const handleSuccess = async () => {
     await router.push('/')
-    toast({
-      title: '정답 입니다!',
-      className: 'bg-emerald-500',
-      duration: 1000,
+    toast.success('정답 입니다!', {
+      duration: 1200,
     })
   }
 
   const handleFailure = async () => {
-    toast({
-      title: '틀렸습니다',
-      variant: 'destructive',
+    toast.error('틀렸습니다', {
+      duration: 1200,
     })
     return
   }

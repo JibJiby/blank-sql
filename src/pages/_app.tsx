@@ -5,8 +5,7 @@ import { Inter } from 'next/font/google'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
-
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from 'sonner'
 
 import { ThemeProvider } from '@/components/theme-provider'
 
@@ -43,7 +42,7 @@ export default function App({
           </QueryClientProvider>
         </SessionProvider>
       </main>
-      <Toaster />
+      <Toaster richColors />
     </ThemeProvider>
   )
 }

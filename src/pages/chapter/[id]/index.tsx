@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Copy } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { useToast } from '@/components/ui/use-toast'
 
 import { QuizInputForm } from '@/components/quiz-input-form'
 import QuizViewer from '@/components/quiz-viewer'
@@ -24,7 +24,6 @@ export default function ChapterQuizResolverPage() {
   const router = useRouter()
   const { id } = router.query
   const [chapterId, setChapterId] = useState('')
-  const { toast } = useToast()
   const [sequence, setSequence] = useState(0)
   const { data: quizzesInChapter, status } = useQuizInChapterQuery(chapterId)
 
@@ -43,26 +42,21 @@ export default function ChapterQuizResolverPage() {
   const handleSuccess = async () => {
     if (sequence + 1 === quizzesInChapterLength) {
       await router.push('/')
-      toast({
-        title: '전부 맞추셨습니다! 축하드립니다~',
-        className: 'bg-emerald-500',
-        duration: 1200,
+      toast.success('전부 맞추셨습니다! 축하드립니다 😆', {
+        duration: 1500,
       })
       return
     }
 
     setSequence((prev) => prev + 1)
-    toast({
-      title: '정답 입니다!',
-      className: 'bg-emerald-500',
+    toast.success('정답 입니다!', {
       duration: 1000,
     })
   }
 
   const handleFailure = async () => {
-    toast({
-      title: '틀렸습니다',
-      variant: 'destructive',
+    toast.error('틀렸습니다', {
+      duration: 1200,
     })
     return
   }
