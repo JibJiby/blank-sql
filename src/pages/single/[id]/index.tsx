@@ -1,13 +1,28 @@
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { toast } from 'sonner'
 
+import { Skeleton } from '@/components/ui/skeleton'
+
 import { QuizInputForm } from '@/components/quiz-input-form'
-import QuizViewer from '@/components/quiz-viewer'
 
 import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
+import { size } from '@/styles/size'
+
 import BaseLayout from '@/layouts/base-layout'
+
+const QuizViewer = dynamic(() => import('@/components/quiz-viewer'), {
+  loading: () => (
+    <Skeleton
+      style={{
+        height: size.quizViewerHeight,
+        width: size.quizViewerWidth,
+      }}
+    />
+  ),
+})
 
 export default function SingleQuizResolverPage() {
   const router = useRouter()

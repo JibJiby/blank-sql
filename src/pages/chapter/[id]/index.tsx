@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
 import { Copy } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Tooltip,
   TooltipContent,
@@ -14,11 +16,23 @@ import {
 } from '@/components/ui/tooltip'
 
 import { QuizInputForm } from '@/components/quiz-input-form'
-import QuizViewer from '@/components/quiz-viewer'
 
 import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
 
+import { size } from '@/styles/size'
+
 import BaseLayout from '@/layouts/base-layout'
+
+const QuizViewer = dynamic(() => import('@/components/quiz-viewer'), {
+  loading: () => (
+    <Skeleton
+      style={{
+        height: size.quizViewerHeight,
+        width: size.quizViewerWidth,
+      }}
+    />
+  ),
+})
 
 export default function ChapterQuizResolverPage() {
   const router = useRouter()
