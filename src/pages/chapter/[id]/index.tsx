@@ -36,6 +36,7 @@ export default function ChapterQuizResolverPage() {
   const handleCopyButton = () => {
     if (quiz) {
       navigator.clipboard.writeText(quiz.id)
+      toast.success('복사 완료 🚀')
     }
   }
 
