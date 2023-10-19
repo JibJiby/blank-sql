@@ -3,11 +3,11 @@ import { KeyboardEvent, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
 import { AxiosError } from 'axios'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import TypographyH3 from '@/components/ui/typography/h3'
-import { useToast } from '@/components/ui/use-toast'
 
 import { api } from '@/lib/axios'
 
@@ -16,7 +16,6 @@ import BaseLayout from '@/layouts/base-layout'
 export default function SingleQuizPage() {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const { toast } = useToast()
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -37,14 +36,10 @@ export default function SingleQuizPage() {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 404) {
-          toast({
-            title: '입력하신 퀴즈 ID가 존재하지 않습니다.',
-            variant: 'destructive',
+          toast.error('입력하신 퀴즈 ID가 존재하지 않습니다.', {
+            duration: 1000,
           })
         }
-        console.error('AxiosError : ', error)
-      } else {
-        console.error('Not AxiosError : ', error)
       }
     }
   }
