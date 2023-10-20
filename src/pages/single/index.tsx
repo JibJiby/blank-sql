@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import TypographyH3 from '@/components/ui/typography/h3'
 
 import { api } from '@/lib/axios'
+import { queryClient } from '@/lib/query'
 
 import BaseLayout from '@/layouts/base-layout'
 
@@ -29,6 +30,12 @@ export default function SingleQuizPage() {
       return
     }
     const quizId = inputRef.current.value
+
+    const cachedQueryData = queryClient.getQueryData(['quizzes', quizId])
+    if (cachedQueryData) {
+      router.push(path + `/${quizId}`)
+      return
+    }
 
     try {
       await api.head(`/quiz/${quizId}`)
