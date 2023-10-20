@@ -2,6 +2,7 @@ import { KeyboardEvent, useEffect, useRef } from 'react'
 
 import { useRouter } from 'next/router'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 
@@ -10,11 +11,11 @@ import { Input } from '@/components/ui/input'
 import TypographyH3 from '@/components/ui/typography/h3'
 
 import { api } from '@/lib/axios'
-import { queryClient } from '@/lib/query'
 
 import BaseLayout from '@/layouts/base-layout'
 
 export default function SingleQuizPage() {
+  const queryClient = useQueryClient()
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
