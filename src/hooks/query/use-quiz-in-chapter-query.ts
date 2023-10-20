@@ -14,7 +14,8 @@ export const useQuizInChapterQuery = (chapterId: string) => {
       return res.data
     },
     enabled: !!chapterId,
-    staleTime: time.MINUTE * 30,
+    staleTime: time.DAY,
+    cacheTime: Infinity,
     initialData: undefined,
   })
 

@@ -4,6 +4,8 @@ import { api } from '@/lib/axios'
 
 import { Quiz } from '@/models/quiz'
 
+import { time } from './constants'
+
 export const useSingleQuizQuery = (quizId: string) => {
   const query = useQuery<Quiz>({
     queryKey: ['quizzes', quizId],
@@ -12,6 +14,8 @@ export const useSingleQuizQuery = (quizId: string) => {
       return res.data
     },
     enabled: quizId !== undefined,
+    staleTime: time.DAY,
+    cacheTime: Infinity,
     initialData: undefined,
   })
 
