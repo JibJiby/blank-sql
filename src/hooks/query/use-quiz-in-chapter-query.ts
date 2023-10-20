@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '@/lib/axios'
 
@@ -7,6 +9,7 @@ import { Quiz } from '@/models/quiz'
 import { time } from './constants'
 
 export const useQuizInChapterQuery = (chapterId: string) => {
+  const queryClient = useQueryClient()
   const query = useQuery<Quiz[]>({
     queryKey: ['chapter', chapterId],
     queryFn: async () => {
@@ -18,6 +21,15 @@ export const useQuizInChapterQuery = (chapterId: string) => {
     cacheTime: Infinity,
     initialData: undefined,
   })
+
+  //
+  useEffect(() => {
+    if (query.data) {
+      for (const quiz of query.data) {
+        queryClient.setQueryData(['quizzes', quiz.id], quiz)
+      }
+    }
+  }, [query.data, queryClient])
 
   return query
 }
