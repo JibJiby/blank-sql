@@ -17,9 +17,9 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  const shouldRender = useMSW()
+  const isCompletedMSWMode = useMSW()
 
-  if (!shouldRender) {
+  if (!isCompletedMSWMode) {
     return null
   }
 

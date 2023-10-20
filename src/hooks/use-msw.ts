@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 
 export const useMSW = () => {
-  const mockingEnabled = !!process.env.NEXT_PUBLIC_API_MOCKING
-  const [shouldRender, setShouldRender] = useState(!mockingEnabled)
+  const isMSWMode = !!process.env.NEXT_PUBLIC_API_MOCKING
+  const [isCompletedMSWMode, setIsCompletedMSWMode] = useState(!isMSWMode)
 
   useEffect(() => {
-    if (mockingEnabled) {
+    if (isMSWMode) {
       import('../mocks').then(async ({ initMocks }) => {
         await initMocks()
-        setShouldRender(true)
+        setIsCompletedMSWMode(true)
       })
     }
-  }, [mockingEnabled])
+  }, [isMSWMode])
 
-  return shouldRender
+  return isCompletedMSWMode
 }
