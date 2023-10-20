@@ -2,6 +2,7 @@ import { KeyboardEvent, useEffect, useRef } from 'react'
 
 import { useRouter } from 'next/router'
 
+import { useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 
@@ -14,6 +15,7 @@ import { api } from '@/lib/axios'
 import BaseLayout from '@/layouts/base-layout'
 
 export default function SingleQuizPage() {
+  const queryClient = useQueryClient()
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -29,6 +31,12 @@ export default function SingleQuizPage() {
       return
     }
     const quizId = inputRef.current.value
+
+    const cachedQueryData = queryClient.getQueryData(['quizzes', quizId])
+    if (cachedQueryData) {
+      router.push(path + `/${quizId}`)
+      return
+    }
 
     try {
       await api.head(`/quiz/${quizId}`)
