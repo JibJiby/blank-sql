@@ -11,6 +11,10 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 </p>
 
 
+&nbsp;
+
+&nbsp;
+
 ## ⚙️ Stack
 
 - Typescript
@@ -25,7 +29,9 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 - Ace-builds
 - Tsyringe
 
+&nbsp;
 
+&nbsp;
 
 ## 🗂 구조
 
@@ -65,9 +71,11 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 
 * 참고
 
-따로 server 디렉토리로 나누어 하위에 `[__도메인__].service.ts` 로 분리한 이유는 추후 서버 프레임워크로 구조 그대로 마이그레이션 하기 쉽도록 최대한 비슷하게 구성함
+따로 server 디렉토리로 나누어 하위에 `[__도메인__].service.ts` 로 분리한 이유는 추후 서버 프레임워크로 구조 그대로 마이그레이션 하기 용이하도록 구성
 
-&nbsp;&nbsp;
+&nbsp;
+
+&nbsp;
 
 ## Get Started
 
@@ -81,7 +89,7 @@ yarn install
 
 ### 📦 local DB 세팅
 
-사전에 `docker` , `docker-compose` 설치가 필요합니다.
+사전에 `docker` , `docker-compose` 설치가 필요합니다
 
 
 
@@ -91,7 +99,7 @@ yarn install
 npx prisma init --datasource-provider mysql
 ```
 
-
+&nbsp;
 
 #### .env 파일 환경변수 입력
 
@@ -101,7 +109,7 @@ npx prisma init --datasource-provider mysql
 DATABASE_URL=mysql://root:password@localhost:3306/blanksql
 ```
 
-
+&nbsp;
 
 #### docker compose
 
@@ -111,7 +119,7 @@ docker-compose up -d
 
 종료할 때는 `down` 으로 정리해주면 됩니다.
 
-
+&nbsp;
 
 #### 실행중인 docker container 확인
 
@@ -121,7 +129,7 @@ docker ps
 # 재시작 : docker start [CONATINER_ID]
 ```
 
-
+&nbsp;
 
 #### 마이그레이션 진행
 
@@ -131,15 +139,13 @@ npx prisma migrate dev --name init
 
 결과로 `\<project_root\>/prisma/migrations` 하위에 마이그레이션 파일들이 생성됩니다.
 
-&nbsp;
-
 마찬가지로, 스키마 생성 및 변경시에도 동일합니다.
 
 ```bash
 npx prisma migrate dev --name add_new_table 
 ```
 
-
+&nbsp;
 
 #### 마이그레이션 반영
 
@@ -147,7 +153,7 @@ npx prisma migrate dev --name add_new_table
 npx prisma db push
 ```
 
-
+&nbsp;
 
 #### DB 확인
 
@@ -155,7 +161,7 @@ npx prisma db push
 npx prisma studio
 ```
 
-&nbsp;
+&nbsp;&nbsp;
 
 #### seeding
 
@@ -165,7 +171,9 @@ npx prisma studio
 yarn seed
 ```
 
+&nbsp;
 
+&nbsp;
 
 ### Planetscale 세팅
 
@@ -179,13 +187,13 @@ npx prisma db push
 
 
 
-<img src="assets/image-20231017173346118.png" alt="planetscale-tables" style="zoom:50%;" />
+<img src="images/image-20231017173346118.png" alt="planetscale-tables" style="zoom:50%;" />
 
+&nbsp;
 
+&nbsp;&nbsp;&nbsp;
 
-&nbsp;&nbsp;
-
-## Troubleshooting
+## 🤦🏻 Troubleshooting
 
 * decorator 관련 prettier import sort
 
@@ -199,5 +207,6 @@ npx prisma db push
 
 순서 중요함 (이외에도 decorator 관련 tsconfig 설정 필수!)
 
+&nbsp;
 
-
+&nbsp;
