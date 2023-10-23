@@ -38,32 +38,32 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 ```bash
 .
 ├── prisma  # DB ORM
-│   ├── migrations
-│   ├── schema.prisma
-│   └── seed.ts
+│   ├── migrations
+│   ├── schema.prisma
+│   └── seed.ts
 ├── public  # static files
-│   ├── favicon-16x16.png
-│   ├── favicon-32x32.png
-│   ├── favicon-96x96.png
-│   ├── favicon.ico
-│   └── mockServiceWorker.js
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   ├── favicon-96x96.png
+│   ├── favicon.ico
+│   └── mockServiceWorker.js
 ├── src     # main source code
-│   ├── components  # 컴포넌트
-│   │   ├── ui      # shadcn/ui 재사용 UI 컴포넌트
-│   │   └── ...     # 이외 프로젝트 내 커스텀 컴포넌트
-│   ├── hooks
-│   │   ├── query   # react-query 관련 hook
-│   │   └── ...     # 이외 client-side custom hook
-│   ├── instrumentation.ts  # (⚠️ experimental)
-│   ├── layouts     # layout 컴포넌트
-│   ├── lib         # utility functions
-│   ├── middleware.ts
-│   ├── mocks       # MSW mocking files
-│   ├── models      # database entity model (for prismaORM)
-│   ├── pages       # NextJS 페이지
-│   ├── server      # DI container & domain services
-│   ├── styles      # style file (.css)
-│   ├── tests       # test
+│   ├── components  # 컴포넌트
+│   │   ├── ui      # shadcn/ui 재사용 UI 컴포넌트
+│   │   └── ...     # 이외 프로젝트 내 커스텀 컴포넌트
+│   ├── hooks
+│   │   ├── query   # react-query 관련 hook
+│   │   └── ...     # 이외 client-side custom hook
+│   ├── instrumentation.ts  # (⚠️ experimental)
+│   ├── layouts     # layout 컴포넌트
+│   ├── lib         # utility functions
+│   ├── middleware.ts
+│   ├── mocks       # MSW mocking files
+│   ├── models      # database entity model (for prismaORM)
+│   ├── pages       # NextJS 페이지
+│   ├── server      # DI container & domain services
+│   ├── styles      # style file (.css)
+│   ├── tests       # test
 │   └── types       # typescript declaration type
 ```
 
@@ -82,16 +82,28 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 ### 🚀 Installation
 
 ```bash
-yarn install
+yarn
 ```
 
-&nbsp;&nbsp;
+&nbsp;
+
+### 🔒 환경 변수 세팅
+
+```bash
+cp .env.example .env.local
+```
+
+example 환경 변수 파일을 복사해서 local 환경 변수 파일을 생성해줍니다. google oauth 프로젝트 세팅 후 client_id 와 client_secret_key 를 입력해줍니다. 
+
+그리고 NextAuth.js 에 필요한 NEXTAUTH_URL 값과 NEXTAUTH_SECRET 값을 입력해줍니다.
+
+&nbsp;
 
 ### 📦 local DB 세팅
 
 사전에 `docker` , `docker-compose` 설치가 필요합니다
 
-
+&nbsp;
 
 #### prisma 초기 세팅
 
