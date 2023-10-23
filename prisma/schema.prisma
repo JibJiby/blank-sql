@@ -47,6 +47,11 @@ model Session {
   @@map(name: "sessions")
 }
 
+enum UserRole {
+  Admin
+  User
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -55,6 +60,8 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+
+  role UserRole @default(User)
 
   accounts Account[]
   sessions Session[]
