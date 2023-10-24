@@ -1,11 +1,10 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense } from 'react'
 
 import { GetServerSideProps } from 'next'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { getServerSession } from 'next-auth'
 import { useForm } from 'react-hook-form'
-import { container } from 'tsyringe'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -18,6 +17,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -34,12 +34,12 @@ import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 
 import BaseLayout from '@/layouts/base-layout'
 import { ChapterSchema } from '@/models/chapter'
-import { UserService } from '@/server/services/user.service'
+import { userService } from '@/server/services'
 
 export default function ChapterAdminPage() {
   return (
     <BaseLayout>
-      <div className="flex flex-col w-[80%] border rounded-md">
+      <div className="flex flex-col max-w-2xl  w-[80%] border rounded-md">
         <div className="overflow-x-auto scrollbar-hide max-h-[400px]">
           <ChapterListViewer />
         </div>
@@ -56,7 +56,6 @@ export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions)
 
   if (session?.user) {
-    const userService = container.resolve(UserService)
     const role = await userService.getRole(session?.user.id)
 
     if (role === 'Admin') {
@@ -88,7 +87,8 @@ function ChapterListViewer() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <Suspense fallback={null}>
+        {/* TODO: react-error-boundary ErrorBoundary 로 감싸기 */}
+        <Suspense fallback={<Skeleton className="w-full min-h-[220px]" />}>
           <ChapterList />
         </Suspense>
       </TableBody>
@@ -118,13 +118,9 @@ function ChapterGenerator() {
   const mutation = useChapterMutation()
 
   const handleSubmit = (value: FormValue) => {
-    console.log('handleSubmit : ', value)
     mutation.mutate(value.chapterName)
+    form.reset()
   }
-
-  useEffect(() => {
-    console.log('mutation.isSuccess : ', mutation.isSuccess)
-  }, [mutation.isSuccess])
 
   return (
     <Form {...form}>
