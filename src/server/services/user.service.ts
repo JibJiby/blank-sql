@@ -9,4 +9,18 @@ export class UserService {
     const users = await db.user.findMany()
     return users
   }
+
+  public getRole = async (userId: string) => {
+    const user = await db.user.findFirst({
+      where: {
+        id: userId,
+      },
+    })
+
+    if (!user) {
+      return null
+    }
+
+    return user.role
+  }
 }
