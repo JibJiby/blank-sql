@@ -14,7 +14,15 @@ export default async function handler(
     const chapters = await chapterService.getAllChapters()
     return res.status(200).json(chapters)
   } else if (req.method === 'POST') {
-    // ...
+    // TODO: role 체크
+    const { newChapterName } = req.body
+    if (!newChapterName) {
+      return res.status(400).send(null)
+    }
+
+    const newChapter = await chapterService.createChapter(newChapterName)
+
+    return res.status(201).json(newChapter)
   }
 
   return res.status(400)

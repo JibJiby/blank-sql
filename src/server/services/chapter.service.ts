@@ -26,4 +26,14 @@ export class ChapterService {
     })
     return chapters
   }
+
+  public createChapter = async (newChapterName: string) => {
+    const newChapter = db.chapter.create({
+      data: {
+        chapterName: newChapterName,
+      },
+    })
+
+    return newChapter
+  }
 }
