@@ -38,4 +38,14 @@ export class ChapterService {
 
     return newChapter
   }
+
+  public deleteChapter = async (chapterId: string) => {
+    const deleted = await this.db.chapter.delete({
+      where: {
+        id: chapterId,
+      },
+    })
+
+    return deleted
+  }
 }

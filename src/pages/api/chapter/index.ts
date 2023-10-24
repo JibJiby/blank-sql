@@ -19,6 +19,10 @@ export default async function handler(
     const newChapter = await chapterService.createChapter(newChapterName)
 
     return res.status(201).json(newChapter)
+  } else if (req.method === 'DELETE') {
+    const chapterId = req.body
+    const deletedChapter = await chapterService.deleteChapter(chapterId)
+    return res.status(204).json(deletedChapter)
   }
 
   return res.status(400)

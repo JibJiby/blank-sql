@@ -3,6 +3,11 @@ import { Suspense } from 'react'
 import { GetServerSideProps } from 'next'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 import { getServerSession } from 'next-auth'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -27,9 +32,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { getColumns } from '@/components/columns/chapter'
+
 import { authOptions } from '@/lib/auth'
 
 import { useChapterMutation } from '@/hooks/mutation/use-chapter-mutation'
+import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 
 import BaseLayout from '@/layouts/base-layout'
@@ -41,11 +49,12 @@ export default function ChapterAdminPage() {
     <BaseLayout>
       <div className="flex flex-col max-w-2xl  w-[80%] border rounded-md">
         <div className="overflow-x-auto scrollbar-hide max-h-[400px]">
-          <ChapterListViewer />
+          <Suspense fallback={<Skeleton className="w-full h-full" />}>
+            <ChapterListViewer />
+          </Suspense>
         </div>
         <div>
           <ChapterGenerator />
-          {/* TODO: ChapterEditor 추가 */}
         </div>
       </div>
     </BaseLayout>
@@ -78,33 +87,49 @@ export const getServerSideProps = (async (context) => {
  */
 
 function ChapterListViewer() {
+  const mutation = useDeleteChapterMutation()
+  const columns = getColumns({
+    deleteHandler: (id: string) => {
+      mutation.mutate(id)
+    },
+  })
+  const { data } = useChapterQuery({ suspense: true })
+
+  const table = useReactTable({
+    data: data!,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead className="text-left w-[30%]">ID</TableHead>
-          <TableHead className="text-center">챕터명</TableHead>
-        </TableRow>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <TableHead key={header.id}>
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
       </TableHeader>
       <TableBody>
-        {/* TODO: react-error-boundary ErrorBoundary 로 감싸기 */}
-        <Suspense fallback={<Skeleton className="w-full min-h-[220px]" />}>
-          <ChapterList />
-        </Suspense>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id} className="text-center">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   )
-}
-
-function ChapterList() {
-  const { data: chapters } = useChapterQuery({ suspense: true })
-
-  return chapters!.map((chapter) => (
-    <TableRow key={chapter.id}>
-      <TableCell>{chapter.id}</TableCell>
-      <TableCell>{chapter.chapterName}</TableCell>
-    </TableRow>
-  ))
 }
 
 //
