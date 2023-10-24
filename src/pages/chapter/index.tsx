@@ -2,11 +2,9 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-import { container } from 'tsyringe'
-
 import BaseLayout from '@/layouts/base-layout'
 import { Chapter } from '@/models/chapter'
-import { ChapterService } from '@/server/services/chapter.service'
+import { chapterService } from '@/server/services'
 
 // TODO: react-query 해당 SIZE 이후로 pagination 으로 client 에서 불러오기
 // const VISIALBE_CHAPTERS_MIN_SIZE = 5
@@ -43,7 +41,6 @@ export default function ChapterQuizPage({
 }
 
 export const getStaticProps = (async () => {
-  const chapterService = container.resolve(ChapterService)
   const chapters = await chapterService.getAllChapters()
   // const chapters = await chapterService.getChaptersPagination(
   //   0,
