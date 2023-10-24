@@ -1,17 +1,18 @@
-import { singleton } from 'tsyringe'
-
-// FIXME: db 의존성 주입 처리에 관한 이슈 해결 필요
-import { db } from '@/lib/db'
+import { PrismaClient } from '@prisma/client'
+import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class UserService {
+  // eslint-disable-next-line no-unused-vars
+  constructor(@inject('PrismaClient') private db: PrismaClient) {}
+
   public getAllUser = async () => {
-    const users = await db.user.findMany()
+    const users = await this.db.user.findMany()
     return users
   }
 
   public getRole = async (userId: string) => {
-    const user = await db.user.findFirst({
+    const user = await this.db.user.findFirst({
       where: {
         id: userId,
       },

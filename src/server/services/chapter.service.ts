@@ -1,16 +1,18 @@
-import { singleton } from 'tsyringe'
-
-import { db } from '@/lib/db'
+import { PrismaClient } from '@prisma/client'
+import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class ChapterService {
+  // eslint-disable-next-line no-unused-vars
+  constructor(@inject('PrismaClient') private db: PrismaClient) {}
+
   public getAllChapters = async () => {
-    const chapters = await db.chapter.findMany()
+    const chapters = await this.db.chapter.findMany()
     return chapters
   }
 
   public findQuizzesByChapterId = async (chapterId: string) => {
-    const quizzes = db.quiz.findMany({
+    const quizzes = await this.db.quiz.findMany({
       where: {
         chapterId,
       },
@@ -20,7 +22,7 @@ export class ChapterService {
   }
 
   public getChaptersPagination = async (skip: number, size: number) => {
-    const chapters = db.chapter.findMany({
+    const chapters = await this.db.chapter.findMany({
       skip: 0,
       take: size,
     })
@@ -28,7 +30,7 @@ export class ChapterService {
   }
 
   public createChapter = async (newChapterName: string) => {
-    const newChapter = db.chapter.create({
+    const newChapter = await this.db.chapter.create({
       data: {
         chapterName: newChapterName,
       },
