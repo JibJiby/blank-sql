@@ -48,4 +48,17 @@ export class ChapterService {
 
     return deleted
   }
+
+  public updateChapter = async (chapterId: string, newChapterName: string) => {
+    const updated = await this.db.chapter.update({
+      where: {
+        id: chapterId,
+      },
+      data: {
+        chapterName: newChapterName,
+      },
+    })
+
+    return updated
+  }
 }
