@@ -29,4 +29,19 @@ export class QuizService {
 
     return foundQuiz
   }
+
+  public createQuiz = async (
+    chapterId: string,
+    quiz: string,
+    answer: string
+  ) => {
+    const newQuiz = await this.db.quiz.create({
+      data: {
+        chapterId,
+        quiz,
+        answer,
+      },
+    })
+    return newQuiz
+  }
 }

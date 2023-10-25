@@ -1,4 +1,4 @@
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 import { GetServerSideProps } from 'next'
 import dynamic from 'next/dynamic'
@@ -32,6 +32,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { auth } from '@/lib/auth'
 import { range } from '@/lib/utils'
 
+import { useCreateQuizMutation } from '@/hooks/mutation/use-create-quiz-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 
 import { size } from '@/styles/size'
@@ -113,6 +114,7 @@ function QuizGeneratorForm() {
     defaultValues: { chapterId: '', quiz: '', answer: {} },
   })
   const [blankCount, setBlankCount] = useState(0)
+  const createMutation = useCreateQuizMutation()
 
   const handleExtractBlank = () => {
     const values = form.getValues()
@@ -135,8 +137,23 @@ function QuizGeneratorForm() {
     }
     // TODO: create quiz
 
-    toast.success('🎉 퀴즈를 정상적으로 생성했습니다!')
+    createMutation.mutate({
+      chapterId: data.chapterId,
+      quiz: data.quiz,
+      answer: JSON.stringify(data.answer),
+    })
   }
+
+  useEffect(() => {
+    if (createMutation.isSuccess) {
+      toast.success('🎉 퀴즈를 정상적으로 생성했습니다!')
+      return
+    }
+    if (createMutation.isError) {
+      toast.error('😢 퀴즈 생성을 정상적으로 마치지 못했습니다')
+      return
+    }
+  }, [createMutation])
 
   return (
     <div className="flex items-center justify-center p-4">
