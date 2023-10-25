@@ -2,14 +2,12 @@ import { Suspense } from 'react'
 
 import { GetServerSideProps } from 'next'
 
-import { getServerSession } from 'next-auth'
-
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { ChapterGenerator } from '@/components/admin/chapter-generator'
 import { ChapterListViewer } from '@/components/admin/chapter-list-viewer'
 
-import { authOptions } from '@/lib/auth'
+import { auth } from '@/lib/auth'
 
 import BaseLayout from '@/layouts/base-layout'
 import { userService } from '@/server/services'
@@ -32,7 +30,7 @@ export default function ChapterAdminPage() {
 }
 
 export const getServerSideProps = (async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions)
+  const session = await auth(context.req, context.res)
 
   if (session?.user) {
     const role = await userService.getRole(session?.user.id)
