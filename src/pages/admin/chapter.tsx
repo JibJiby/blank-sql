@@ -1,4 +1,4 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 
 import { GetServerSideProps } from 'next'
 
@@ -37,7 +37,7 @@ import { getColumns } from '@/components/columns/chapter'
 
 import { authOptions } from '@/lib/auth'
 
-import { useChapterMutation } from '@/hooks/mutation/use-chapter-mutation'
+import { useCreateChapterMutation } from '@/hooks/mutation/use-create-chapter-mutation'
 import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
@@ -152,12 +152,25 @@ function ChapterGenerator() {
     resolver: zodResolver(ChapterSchema.pick({ chapterName: true })),
     defaultValues: { chapterName: '' },
   })
-  const mutation = useChapterMutation()
+  const mutation = useCreateChapterMutation()
 
   const handleSubmit = (value: FormValue) => {
     mutation.mutate(value.chapterName)
-    form.reset()
   }
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      // 기존 onSuccess 에서 UI 로직을 useEffect 로 분리
+      toast.success('🎉 성공적으로 새로운 챕터를 생성했습니다!')
+      form.reset()
+    }
+  }, [form, mutation.isSuccess])
+
+  useEffect(() => {
+    if (mutation.isError) {
+      toast.error('😢 서버 에러로 인해 생성하지 못했습니다')
+    }
+  }, [mutation.isError])
 
   return (
     <Form {...form}>
