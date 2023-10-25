@@ -3,7 +3,6 @@ import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class QuizService {
-  // eslint-disable-next-line no-unused-vars
   constructor(@inject('PrismaClient') private db: PrismaClient) {}
 
   public getAllQuizzes = async () => {

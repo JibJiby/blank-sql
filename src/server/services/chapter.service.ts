@@ -3,7 +3,6 @@ import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class ChapterService {
-  // eslint-disable-next-line no-unused-vars
   constructor(@inject('PrismaClient') private db: PrismaClient) {}
 
   public getAllChapters = async () => {

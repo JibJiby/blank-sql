@@ -3,7 +3,6 @@ import { inject, singleton } from 'tsyringe'
 
 @singleton()
 export class UserService {
-  // eslint-disable-next-line no-unused-vars
   constructor(@inject('PrismaClient') private db: PrismaClient) {}
 
   public getAllUser = async () => {

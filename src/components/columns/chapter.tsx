@@ -32,9 +32,7 @@ const columnsWithoutAction: ColumnDef<Chapter>[] = [
 ]
 
 type Params = {
-  // eslint-disable-next-line no-unused-vars
   editHandler: (id: string, newChapterName: string) => void
-  // eslint-disable-next-line no-unused-vars
   deleteHandler: (id: string) => void
 }
 

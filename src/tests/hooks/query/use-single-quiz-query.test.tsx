@@ -6,7 +6,6 @@ import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
 describe('Test useSingleQuizQuery Hook', () => {
   let createWrapper: () => ({
-    // eslint-disable-next-line no-unused-vars
     children,
   }: {
     children: React.ReactNode
