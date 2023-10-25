@@ -14,7 +14,10 @@ export const useUpdateChapterMutation = () => {
       newChapterName: string
     }) => {
       try {
-        const res = await api.patch('/chapter', { chapterId, newChapterName })
+        const res = await api.patch('/admin/chapter', {
+          chapterId,
+          newChapterName,
+        })
         return res.data
       } catch (err) {
         console.error(err)

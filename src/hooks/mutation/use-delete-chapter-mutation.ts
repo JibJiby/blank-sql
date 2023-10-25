@@ -8,7 +8,7 @@ export const useDeleteChapterMutation = () => {
   const mutation = useMutation({
     mutationFn: async (chapterId: string) => {
       try {
-        const res = await api.delete('/chapter', { data: chapterId })
+        const res = await api.delete('/admin/chapter', { data: chapterId })
         return res.data
       } catch (err) {
         console.error(err)
