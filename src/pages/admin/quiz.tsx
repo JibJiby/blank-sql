@@ -127,9 +127,7 @@ function ChapterFilter() {
         <SelectGroup>
           <SelectLabel>챕터 목록</SelectLabel>
           <SelectItem value="all">ALL</SelectItem>
-          <Suspense fallback={null}>
-            <ChapterSelectItems />
-          </Suspense>
+          <ChapterSelectItems />
         </SelectGroup>
       </SelectContent>
     </Select>
