@@ -1,8 +1,21 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 import { api } from '@/lib/axios'
 
-export const useDeleteQuizMutation = () => {
+type Params = {
+  successFeedback: () => void
+  errorFeedback: () => void
+}
+
+export const useDeleteQuizMutation = ({
+  successFeedback,
+  errorFeedback,
+}: Params) => {
   const queryClient = useQueryClient()
   const mutation = useMutation({
     mutationFn: async (quizId: string) => {
@@ -15,7 +28,12 @@ export const useDeleteQuizMutation = () => {
       }
     },
     onSuccess: () => {
+      successFeedback()
+
       queryClient.invalidateQueries(['paging', 'quizzes'])
+    },
+    onError: () => {
+      errorFeedback()
     },
   })
 
