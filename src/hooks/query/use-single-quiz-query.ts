@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { UseQueryOptions, useQuery } from '@tanstack/react-query'
 
 import { api } from '@/lib/axios'
 
@@ -6,7 +6,12 @@ import { Quiz } from '@/models/quiz'
 
 import { time } from './constants'
 
-export const useSingleQuizQuery = (quizId: string) => {
+type Options = Pick<UseQueryOptions, 'enabled'> | undefined
+
+export const useSingleQuizQuery = (
+  quizId: string,
+  options: Options = undefined
+) => {
   const query = useQuery<Quiz>({
     queryKey: ['quizzes', quizId],
     queryFn: async () => {
@@ -21,7 +26,8 @@ export const useSingleQuizQuery = (quizId: string) => {
     meta: {
       errorMessage: '퀴즈 데이터를 서버로부터 가져오지 못했습니다.',
     },
-    enabled: quizId !== undefined,
+    enabled:
+      options && options.enabled === false ? false : quizId !== undefined,
     staleTime: time.DAY,
     cacheTime: Infinity,
     initialData: undefined,

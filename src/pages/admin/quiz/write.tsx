@@ -34,7 +34,9 @@ import { auth } from '@/lib/auth'
 import { range } from '@/lib/utils'
 
 import { useCreateQuizMutation } from '@/hooks/mutation/use-create-quiz-mutation'
+import { useUpdateQuizMutation } from '@/hooks/mutation/use-update-quiz-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
+import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
 import { size } from '@/styles/size'
 
@@ -45,12 +47,10 @@ import { userService } from '@/server/services'
 export default function QuizAdminWritePage({
   id,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log('id : ', id)
-
   return (
     <BaseLayout>
       <div className="flex flex-col justify-center max-w-2xl  w-[80%] border rounded-md pt-4 pb-6">
-        <QuizEditForm />
+        <QuizEditForm quizId={id} />
       </div>
     </BaseLayout>
   )
@@ -119,14 +119,25 @@ type FormValue = Pick<z.infer<typeof QuizSchema>, 'chapterId' | 'quiz'> & {
 
 const answerSchema = z.record(z.string().min(1))
 
-// TODO: 세부 분리 필요
-function QuizEditForm() {
+type QuizEditFormProps = {
+  quizId?: string
+}
+
+function QuizEditForm({ quizId }: QuizEditFormProps) {
   const router = useRouter()
   const form = useForm<FormValue>({
     defaultValues: { chapterId: '', quiz: '', answer: {} },
   })
   const [blankCount, setBlankCount] = useState(0)
+  const {
+    data: quizData,
+    isSuccess: isSuccessSingleQuiz,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useSingleQuizQuery(quizId || '', { enabled: false })
   const createMutation = useCreateQuizMutation()
+  const updateMutation = useUpdateQuizMutation()
 
   const handleExtractBlank = () => {
     const values = form.getValues()
@@ -151,11 +162,20 @@ function QuizEditForm() {
       return toast.error('❌ 빈칸이 하나 이상 있어야 합니다')
     }
 
-    createMutation.mutate({
-      chapterId: data.chapterId,
-      quiz: data.quiz,
-      answer: JSON.stringify(data.answer),
-    })
+    if (quizId) {
+      updateMutation.mutate({
+        id: quizId,
+        quiz: data.quiz,
+        answer: JSON.stringify(data.answer),
+        chapterId: data.chapterId,
+      })
+    } else {
+      createMutation.mutate({
+        chapterId: data.chapterId,
+        quiz: data.quiz,
+        answer: JSON.stringify(data.answer),
+      })
+    }
   }
 
   useEffect(() => {
@@ -169,6 +189,44 @@ function QuizEditForm() {
       return
     }
   }, [router, createMutation])
+
+  useEffect(() => {
+    if (updateMutation.isSuccess) {
+      toast.success('🎉 퀴즈를 정상적으로 수정했습니다!')
+      router.push('/admin/quiz')
+      return
+    }
+    if (updateMutation.isError) {
+      toast.error('😢 퀴즈 수정을 정상적으로 마치지 못했습니다')
+      return
+    }
+  }, [router, updateMutation])
+
+  useEffect(() => {
+    if (isSuccessSingleQuiz) {
+      form.setValue('chapterId', quizData.chapterId)
+      form.setValue('quiz', quizData.quiz)
+
+      const answer = JSON.parse(quizData.answer)
+      form.setValue('answer', answer)
+      setBlankCount(Object.keys(answer).length)
+    }
+  }, [form, quizData, isSuccessSingleQuiz])
+
+  useEffect(() => {
+    // updateMutation 과 분리하거나
+    // (mutate 이후 해당 컴포넌트를 리렌더링하여 useSingleQuizQuery 또 실행하게 되기때문에 toast 2번 노출)
+    // just one time fetching
+    refetch()
+  }, [])
+
+  // TODO: 추후 Suspense 와 react-error-boundary 로 처리
+  if (isLoading || isFetching) {
+    return null
+  }
+  if (updateMutation.isLoading || createMutation.isLoading) {
+    return null
+  }
 
   return (
     <div className="flex items-center justify-center p-4">
@@ -185,7 +243,11 @@ function QuizEditForm() {
               <FormItem>
                 <FormLabel className="pb-4">챕터 ID</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue=""
+                    value={quizId && field.value}
+                  >
                     <SelectTrigger className="w-[300px]">
                       <SelectValue
                         placeholder="챕터를 선택해주세요"
@@ -224,7 +286,7 @@ function QuizEditForm() {
           <ExtractedQuizAnswerInput form={form} blankCount={blankCount} />
 
           <div className="flex flex-row-reverse gap-2">
-            <Button type="submit">만들기</Button>
+            <Button type="submit">{quizId ? '수정하기' : '만들기'}</Button>
             <Button type="button" variant="ghost" onClick={handleExtractBlank}>
               빈칸 추출
             </Button>
