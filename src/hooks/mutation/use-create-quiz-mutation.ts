@@ -25,7 +25,9 @@ export const useCreateQuizMutation = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['paging', 'quizzes'])
+      queryClient.invalidateQueries(['paging', 'quizzes'], {
+        type: 'all',
+      })
     },
   })
 
