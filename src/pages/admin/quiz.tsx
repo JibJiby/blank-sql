@@ -1,23 +1,17 @@
-import { Suspense, useEffect, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  createContext,
+  useContext,
+  useState,
+} from 'react'
 
 import { GetServerSideProps } from 'next'
 import dynamic from 'next/dynamic'
-
-import { UseFormReturn, useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import * as z from 'zod'
+import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -29,25 +23,57 @@ import {
 } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 
+import { ChapterSelectItems } from '@/components/admin/chapter-select-items'
+
 import { auth } from '@/lib/auth'
-import { range } from '@/lib/utils'
-
-import { useCreateQuizMutation } from '@/hooks/mutation/use-create-quiz-mutation'
-import { useChapterQuery } from '@/hooks/query/use-chapter-query'
-
-import { size } from '@/styles/size'
 
 import BaseLayout from '@/layouts/base-layout'
-import { QuizSchema } from '@/models/quiz'
 import { userService } from '@/server/services'
 
+const QUIZ_LIST_VIEWER_HEIGHT = 450
+
+const QuizListViewer = dynamic(
+  () =>
+    import('@/components/admin/quiz-list-viewer').then(
+      (mod) => mod.QuizListViewer
+    ),
+  {
+    loading: () => (
+      <Skeleton
+        className="w-full"
+        style={{ height: QUIZ_LIST_VIEWER_HEIGHT }}
+      />
+    ),
+    ssr: false,
+  }
+)
+
 export default function QuizAdminPage() {
+  const [filterChapterId, setFilterChapterId] = useState('')
+
   return (
-    <BaseLayout>
-      <div className="flex flex-col justify-center max-w-2xl  w-[80%] border rounded-md pt-4 pb-6">
-        <QuizGeneratorForm />
-      </div>
-    </BaseLayout>
+    <ChapterFilterContext.Provider
+      value={{ filterChapterId, setFilterChapterId }}
+    >
+      <BaseLayout>
+        <div className="flex flex-col justify-center max-w-2xl max-h-[550px] w-[80%] border rounded-md pb-6">
+          <div className="px-6 py-4">
+            <ChapterFilter />
+          </div>
+          <div
+            className="overflow-x-auto scrollbar-hide"
+            style={{ height: QUIZ_LIST_VIEWER_HEIGHT }}
+          >
+            <QuizListViewer />
+          </div>
+          <div className="flex flex-row-reverse px-10 py-6">
+            <Button>
+              <Link href="/admin/quiz/write">퀴즈 생성</Link>
+            </Button>
+          </div>
+        </div>
+      </BaseLayout>
+    </ChapterFilterContext.Provider>
   )
 }
 
@@ -71,172 +97,41 @@ export const getServerSideProps = (async (context) => {
 }) satisfies GetServerSideProps<{}>
 
 /**
- * --------------------------------------------------
- * TODO: 컴포넌트 분리
- * --------------------------------------------------
+ * ------------------------------------------------
+ * TODO: 분리
+ * ------------------------------------------------
  */
-function ChapterSelectItems() {
-  const { data: chapters } = useChapterQuery({ suspense: true })
 
-  return chapters!.map((chapter) => (
-    <SelectItem key={chapter.id} value={chapter.id}>
-      {chapter.chapterName}
-    </SelectItem>
-  ))
+type ChapterFilterContextType = {
+  filterChapterId: string
+  setFilterChapterId: Dispatch<SetStateAction<string>>
 }
 
-// ----
+const ChapterFilterContext = createContext<ChapterFilterContextType | null>(
+  null
+)
 
-const QuizEditor = dynamic(() => import('@/components/admin/quiz-editor'), {
-  loading: () => (
-    <Skeleton
-      style={{
-        height: size.quizViewerHeight,
-        width: size.quizViewerWidth,
-      }}
-    />
-  ),
-})
+function ChapterFilter() {
+  const { setFilterChapterId } = useContext(ChapterFilterContext)!
 
-//
-type FormValue = Pick<z.infer<typeof QuizSchema>, 'chapterId' | 'quiz'> & {
-  // NOTE: 기존 QuizSchema 에선 answer 가 string 이지만 form 내에선 nested object 로 다루고
-  // API 요청 payload 에선 stringify
-  // TODO: 더 나은 방식 찾기 (answer_[idx] 에 대해선 answerSchema 에서 처리)
-  [key: string]: Record<number, string>
-}
-
-const answerSchema = z.record(z.string().min(1))
-
-// TODO: 세부 분리 필요
-function QuizGeneratorForm() {
-  const form = useForm<FormValue>({
-    defaultValues: { chapterId: '', quiz: '', answer: {} },
-  })
-  const [blankCount, setBlankCount] = useState(0)
-  const createMutation = useCreateQuizMutation()
-
-  const handleExtractBlank = () => {
-    const values = form.getValues()
-    const quizString = values.quiz
-
-    const identifiedBlankCount = quizString.match(/_{4}/g)?.length || 0
-    setBlankCount(identifiedBlankCount)
+  const handleValueChanged = (chapterId: string) => {
+    setFilterChapterId(chapterId)
   }
 
-  const handleSubmit = (data: FormValue) => {
-    console.log('handleSubmit : ', data)
-
-    // validation
-    if (
-      !answerSchema.safeParse(data.answer).success ||
-      !data.chapterId ||
-      data.quiz.trim() === ''
-    ) {
-      return toast.error('❌ 모두 내용을 채워주세요')
-    }
-    // TODO: create quiz
-
-    createMutation.mutate({
-      chapterId: data.chapterId,
-      quiz: data.quiz,
-      answer: JSON.stringify(data.answer),
-    })
-  }
-
-  useEffect(() => {
-    if (createMutation.isSuccess) {
-      toast.success('🎉 퀴즈를 정상적으로 생성했습니다!')
-      return
-    }
-    if (createMutation.isError) {
-      toast.error('😢 퀴즈 생성을 정상적으로 마치지 못했습니다')
-      return
-    }
-  }, [createMutation])
-
   return (
-    <div className="flex items-center justify-center p-4">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="px-4 py-6 space-y-6"
-        >
-          {/* TODO: 합성 컴포넌트여서 각각 응집도는 좋지만 좀 더 간결한 방식 고려 필요 */}
-          <FormField
-            control={form.control}
-            name="chapterId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="pb-4">챕터 ID</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="w-[300px]">
-                      <SelectValue
-                        placeholder="챕터를 선택해주세요"
-                        {...field}
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>현재 챕터</SelectLabel>
-                        <Suspense fallback={null}>
-                          <ChapterSelectItems />
-                        </Suspense>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="quiz"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="pb-4">문제 SQL</FormLabel>
-                <FormControl>
-                  <QuizEditor {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <ExtractedQuizAnswerInput form={form} blankCount={blankCount} />
-
-          <div className="flex flex-row-reverse gap-2">
-            <Button type="submit">만들기</Button>
-            <Button type="button" variant="ghost" onClick={handleExtractBlank}>
-              빈칸 추출
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
-  )
-}
-
-function ExtractedQuizAnswerInput({
-  form,
-  blankCount,
-}: {
-  form: UseFormReturn<FormValue, any, undefined>
-  blankCount: number
-}) {
-  return (
-    <div className="flex flex-col p-4 space-y-2">
-      {range(blankCount).map((_, idx) => (
-        <div key={`answer_${idx}`} className="flex justify-between">
-          <div className="flex items-center justify-center p-4 pl-1">
-            <Label htmlFor={`answer.${idx}`}>{idx + 1}</Label>
-          </div>
-          <Input {...form.register(`answer.${idx}`)} />
-        </div>
-      ))}
-    </div>
+    <Select onValueChange={handleValueChanged}>
+      <SelectTrigger className="w-[300px]">
+        <SelectValue placeholder="챕터 목록" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>챕터 목록</SelectLabel>
+          <SelectItem value="all">ALL</SelectItem>
+          <Suspense fallback={null}>
+            <ChapterSelectItems />
+          </Suspense>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   )
 }
