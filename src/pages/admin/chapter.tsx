@@ -1,25 +1,44 @@
-import { Suspense } from 'react'
-
 import { GetServerSideProps } from 'next'
+import dynamic from 'next/dynamic'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { ChapterGenerator } from '@/components/admin/chapter-generator'
-import { ChapterListViewer } from '@/components/admin/chapter-list-viewer'
 
 import { auth } from '@/lib/auth'
 
 import BaseLayout from '@/layouts/base-layout'
 import { userService } from '@/server/services'
 
+const QUIZ_LIST_VIEWER_HEIGHT = 450
+
+const ChapterListViewer = dynamic(
+  () =>
+    import('@/components/admin/chapter-list-viewer').then(
+      (mod) => mod.ChapterListViewer
+    ),
+  {
+    loading: () => (
+      <Skeleton
+        className="w-full"
+        style={{ height: QUIZ_LIST_VIEWER_HEIGHT }}
+      />
+    ),
+    ssr: false,
+  }
+)
+
 export default function ChapterAdminPage() {
   return (
     <BaseLayout>
       <div className="flex flex-col max-w-2xl  w-[80%] border rounded-md">
-        <div className="overflow-x-auto scrollbar-hide max-h-[400px]">
-          <Suspense fallback={<Skeleton className="w-full h-full" />}>
-            <ChapterListViewer />
-          </Suspense>
+        <div
+          className="overflow-x-auto scrollbar-hide"
+          style={{
+            height: QUIZ_LIST_VIEWER_HEIGHT,
+          }}
+        >
+          <ChapterListViewer />
         </div>
         <div>
           <ChapterGenerator />
