@@ -35,6 +35,9 @@ export function QuizListViewer() {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      columnVisibility: { chapterId: false },
+    },
   })
 
   // FIXME: fetchNextPage 이후 컴포넌트 무한 리렌더링

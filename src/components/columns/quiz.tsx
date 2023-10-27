@@ -28,6 +28,10 @@ const columnsWithoutAction: ColumnDef<Quiz>[] = [
     accessorKey: 'chapter.chapterName',
     header: () => <div className="font-bold text-center">챕터명</div>,
   },
+  {
+    id: 'chapterId',
+    accessorKey: 'chapterId',
+  },
 ]
 
 type Params = {
