@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -27,25 +25,17 @@ export function ChapterGenerator() {
     resolver: zodResolver(ChapterSchema.pick({ chapterName: true })),
     defaultValues: { chapterName: '' },
   })
-  const mutation = useCreateChapterMutation()
+  const mutation = useCreateChapterMutation({
+    successFeedback: () => {
+      toast.success('🎉 성공적으로 새로운 챕터를 생성했습니다!')
+      form.reset()
+    },
+    errorFeedback: () => toast.error('😢 서버 에러로 인해 생성하지 못했습니다'),
+  })
 
   const handleSubmit = (value: FormValue) => {
     mutation.mutate(value.chapterName)
   }
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      // 기존 onSuccess 에서 UI 로직을 useEffect 로 분리
-      toast.success('🎉 성공적으로 새로운 챕터를 생성했습니다!')
-      form.reset()
-    }
-  }, [form, mutation.isSuccess])
-
-  useEffect(() => {
-    if (mutation.isError) {
-      toast.error('😢 서버 에러로 인해 생성하지 못했습니다')
-    }
-  }, [mutation.isError])
 
   return (
     <Form {...form}>
