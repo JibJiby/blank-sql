@@ -35,7 +35,7 @@ type Params = {
 }
 
 // TODO: use-hook 으로 바꾸기
-export function getColumns({ deleteHandler }: Params) {
+export function useQuizTableColumns({ deleteHandler }: Params) {
   const columns: ColumnDef<Quiz>[] = [
     ...columnsWithoutAction,
     {
@@ -55,7 +55,7 @@ export function getColumns({ deleteHandler }: Params) {
 
 /**
  * ------------------------------------------------------
- * TODO: 컴포넌트 분리
+ * 내부 컴포넌트
  * ------------------------------------------------------
  */
 type QuizEditButtonCellProps = CellContext<Quiz, unknown>

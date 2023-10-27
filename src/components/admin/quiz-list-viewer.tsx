@@ -20,7 +20,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { getColumns } from '@/components/columns/quiz'
+import { useQuizTableColumns } from '@/components/columns/quiz'
 
 import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation'
 import { useQuizInfinityQuery } from '@/hooks/query/use-quiz-infinity-query'
@@ -32,7 +32,7 @@ export function QuizListViewer() {
     errorFeedback: () =>
       toast.error('😭 서버 오류로 챕터를 삭제하지 못했습니다'),
   })
-  const columns = getColumns({
+  const columns = useQuizTableColumns({
     deleteHandler: (id: string) => {
       deleteMutation.mutate(id)
     },
