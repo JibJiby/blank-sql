@@ -2,7 +2,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { api } from '@/lib/axios'
 
-export const useUpdateChapterMutation = () => {
+type Params = {
+  successFeedback: () => void
+  errorFeedback: () => void
+}
+
+export const useUpdateChapterMutation = ({
+  successFeedback,
+  errorFeedback,
+}: Params) => {
   const queryClient = useQueryClient()
   const mutation = useMutation({
     mutationFn: async ({
@@ -25,6 +33,10 @@ export const useUpdateChapterMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['chapters'])
+      successFeedback()
+    },
+    onError: () => {
+      errorFeedback()
     },
   })
 
