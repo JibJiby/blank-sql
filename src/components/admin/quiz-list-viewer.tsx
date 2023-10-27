@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+
 import {
   getCoreRowModel,
   getFilteredRowModel,
@@ -14,7 +16,10 @@ import { useQuizTableColumns } from '@/components/columns/quiz'
 import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation'
 import { useQuizInfinityQuery } from '@/hooks/query/use-quiz-infinity-query'
 
+import { ChapterFilterContext } from '@/pages/admin/quiz'
+
 export function QuizListViewer() {
+  const { filterChapterId } = useContext(ChapterFilterContext)!
   const deleteMutation = useDeleteQuizMutation({
     successFeedback: () => toast.success('🗑️ 해당 챕터를 삭제 완료했습니다'),
     errorFeedback: () =>
@@ -37,6 +42,7 @@ export function QuizListViewer() {
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnVisibility: { chapterId: false },
+      columnFilters: [{ id: 'chapterId', value: filterChapterId }],
     },
   })
 

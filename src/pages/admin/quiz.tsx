@@ -1,7 +1,6 @@
 import {
   Dispatch,
   SetStateAction,
-  Suspense,
   createContext,
   useContext,
   useState,
@@ -98,7 +97,7 @@ export const getServerSideProps = (async (context) => {
 
 /**
  * ------------------------------------------------
- * TODO: 분리
+ * 내부 컴포넌트
  * ------------------------------------------------
  */
 
@@ -107,9 +106,8 @@ type ChapterFilterContextType = {
   setFilterChapterId: Dispatch<SetStateAction<string>>
 }
 
-const ChapterFilterContext = createContext<ChapterFilterContextType | null>(
-  null
-)
+export const ChapterFilterContext =
+  createContext<ChapterFilterContextType | null>(null)
 
 function ChapterFilter() {
   const { setFilterChapterId } = useContext(ChapterFilterContext)!
