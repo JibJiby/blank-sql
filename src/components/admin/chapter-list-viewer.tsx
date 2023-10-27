@@ -1,26 +1,15 @@
 import { useEffect } from 'react'
 
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { toast } from 'sonner'
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
 import { useChapterTableColumns } from '@/components/columns/chapter'
 
 import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
+
+import { BasicReactTable } from './basic-react-table'
 
 export function ChapterListViewer() {
   const deleteMutation = useDeleteChapterMutation()
@@ -73,33 +62,5 @@ export function ChapterListViewer() {
     }
   }, [deleteMutation.isError])
 
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className="text-center">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
+  return <BasicReactTable table={table} />
 }

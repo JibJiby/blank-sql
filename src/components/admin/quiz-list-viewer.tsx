@@ -1,6 +1,4 @@
 import {
-  Table as ReactTableType,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -9,15 +7,8 @@ import {
 import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
+import { BasicReactTable } from '@/components/admin/basic-react-table'
 import { useQuizTableColumns } from '@/components/columns/quiz'
 
 import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation'
@@ -46,8 +37,9 @@ export function QuizListViewer() {
     getFilteredRowModel: getFilteredRowModel(),
   })
 
-  const handleLoadMore = async () => {
-    await fetchNextPage()
+  // FIXME: fetchNextPage 이후 컴포넌트 무한 리렌더링
+  const handleLoadMore = () => {
+    fetchNextPage()
     // ...
   }
 
@@ -57,7 +49,7 @@ export function QuizListViewer() {
 
   return (
     <>
-      <QuizListViewerTable table={table} />
+      <BasicReactTable table={table} />
       <div className="flex items-center justify-center py-4">
         <Button
           variant="outline"
@@ -68,41 +60,5 @@ export function QuizListViewer() {
         </Button>
       </div>
     </>
-  )
-}
-
-function QuizListViewerTable<TData>({
-  table,
-}: {
-  table: ReactTableType<TData>
-}) {
-  return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext()
-                )}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className="text-center">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
   )
 }
