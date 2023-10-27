@@ -16,7 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { getColumns } from '@/components/columns/chapter'
+import { useChapterTableColumns } from '@/components/columns/chapter'
 
 import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'
@@ -25,7 +25,7 @@ import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 export function ChapterListViewer() {
   const deleteMutation = useDeleteChapterMutation()
   const updateMutation = useUpdateChapterMutation()
-  const columns = getColumns({
+  const columns = useChapterTableColumns({
     deleteHandler: (id: string) => {
       deleteMutation.mutate(id)
     },

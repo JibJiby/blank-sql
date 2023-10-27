@@ -36,21 +36,15 @@ type Params = {
   deleteHandler: (id: string) => void
 }
 
-export function getColumns({ editHandler, deleteHandler }: Params) {
+export function useChapterTableColumns({ editHandler, deleteHandler }: Params) {
   const columns: ColumnDef<Chapter>[] = [
     ...columnsWithoutAction,
-    /**
-     * 수정
-     */
     {
       id: 'editAction',
       cell: (props) => (
         <ChapterEditButtonCell {...props} editHandler={editHandler} />
       ),
     },
-    /**
-     * 삭제
-     */
     {
       id: 'deleteAction',
       cell: (props) => (
