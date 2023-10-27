@@ -120,8 +120,24 @@ function QuizEditForm({ quizId }: QuizEditFormProps) {
     isSuccess: isSuccessSingleQuiz,
     refetch,
   } = useSingleQuizQuery(quizId || '')
-  const createMutation = useCreateQuizMutation()
-  const updateMutation = useUpdateQuizMutation()
+  const createMutation = useCreateQuizMutation({
+    successFeedback: () => {
+      toast.success('🎉 퀴즈를 정상적으로 생성했습니다!')
+      router.push('/admin/quiz')
+    },
+    errorFeedback: () => {
+      toast.error('😢 퀴즈 생성을 정상적으로 마치지 못했습니다')
+    },
+  })
+  const updateMutation = useUpdateQuizMutation({
+    successFeedback: () => {
+      toast.success('🎉 퀴즈를 정상적으로 수정했습니다!')
+      router.push('/admin/quiz')
+    },
+    errorFeedback: () => {
+      toast.error('😢 퀴즈 수정을 정상적으로 마치지 못했습니다')
+    },
+  })
 
   const handleExtractBlank = () => {
     const values = form.getValues()
@@ -161,30 +177,6 @@ function QuizEditForm({ quizId }: QuizEditFormProps) {
       })
     }
   }
-
-  useEffect(() => {
-    if (createMutation.isSuccess) {
-      toast.success('🎉 퀴즈를 정상적으로 생성했습니다!')
-      router.push('/admin/quiz')
-      return
-    }
-    if (createMutation.isError) {
-      toast.error('😢 퀴즈 생성을 정상적으로 마치지 못했습니다')
-      return
-    }
-  }, [router, createMutation])
-
-  useEffect(() => {
-    if (updateMutation.isSuccess) {
-      toast.success('🎉 퀴즈를 정상적으로 수정했습니다!')
-      router.push('/admin/quiz')
-      return
-    }
-    if (updateMutation.isError) {
-      toast.error('😢 퀴즈 수정을 정상적으로 마치지 못했습니다')
-      return
-    }
-  }, [router, updateMutation])
 
   useEffect(() => {
     if (isSuccessSingleQuiz) {

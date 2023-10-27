@@ -4,7 +4,15 @@ import { api } from '@/lib/axios'
 
 import { Quiz } from '@/models/quiz'
 
-export const useUpdateQuizMutation = () => {
+type Params = {
+  successFeedback: () => void
+  errorFeedback: () => void
+}
+
+export const useUpdateQuizMutation = ({
+  successFeedback,
+  errorFeedback,
+}: Params) => {
   const queryClient = useQueryClient()
   const mutation = useMutation({
     mutationFn: async ({
@@ -28,6 +36,10 @@ export const useUpdateQuizMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['quizzes'])
+      successFeedback()
+    },
+    onError: () => {
+      errorFeedback()
     },
   })
 
