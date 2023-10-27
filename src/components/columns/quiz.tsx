@@ -24,8 +24,8 @@ const columnsWithoutAction: ColumnDef<Quiz>[] = [
     header: () => <div className="font-bold text-center">퀴즈 ID</div>,
   },
   {
-    id: 'chapterName',
-    accessorKey: 'chapterName',
+    id: 'chapter.chapterName',
+    accessorKey: 'chapter.chapterName',
     header: () => <div className="font-bold text-center">챕터명</div>,
   },
 ]
@@ -34,7 +34,6 @@ type Params = {
   deleteHandler: (id: string) => void
 }
 
-// TODO: use-hook 으로 바꾸기
 export function useQuizTableColumns({ deleteHandler }: Params) {
   const columns: ColumnDef<Quiz>[] = [
     ...columnsWithoutAction,

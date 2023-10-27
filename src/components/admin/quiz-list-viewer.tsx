@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import {
   Table as ReactTableType,
   flexRender,
@@ -26,7 +24,6 @@ import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation
 import { useQuizInfinityQuery } from '@/hooks/query/use-quiz-infinity-query'
 
 export function QuizListViewer() {
-  const [pageCount, setPageCount] = useState(1)
   const deleteMutation = useDeleteQuizMutation({
     successFeedback: () => toast.success('🗑️ 해당 챕터를 삭제 완료했습니다'),
     errorFeedback: () =>
@@ -37,19 +34,22 @@ export function QuizListViewer() {
       deleteMutation.mutate(id)
     },
   })
-  // TODO: paging size constant 분리
-  const { data, isLoading } = useQuizInfinityQuery({
-    page: pageCount,
-    size: 20,
+  const { data, isLoading, fetchNextPage } = useQuizInfinityQuery({
+    size: 10,
   })
 
   const table = useReactTable({
-    data: data?.pages.at(pageCount - 1) || [],
+    data: data?.pages.flat() || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   })
+
+  const handleLoadMore = async () => {
+    await fetchNextPage()
+    // ...
+  }
 
   if (isLoading) {
     return null
@@ -58,7 +58,15 @@ export function QuizListViewer() {
   return (
     <>
       <QuizListViewerTable table={table} />
-      <QuizListViewerPagination table={table} />
+      <div className="flex items-center justify-center py-4">
+        <Button
+          variant="outline"
+          onClick={handleLoadMore}
+          disabled={!data?.pages.at(-1)?.length}
+        >
+          더 가져오기
+        </Button>
+      </div>
     </>
   )
 }
@@ -96,32 +104,5 @@ function QuizListViewerTable<TData>({
         ))}
       </TableBody>
     </Table>
-  )
-}
-
-function QuizListViewerPagination<TData>({
-  table,
-}: {
-  table: ReactTableType<TData>
-}) {
-  return (
-    <div className="flex items-center justify-end py-4 space-x-2">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.previousPage()}
-        disabled={!table.getCanPreviousPage()}
-      >
-        Previous
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => table.nextPage()}
-        disabled={!table.getCanNextPage()}
-      >
-        Next
-      </Button>
-    </div>
   )
 }
