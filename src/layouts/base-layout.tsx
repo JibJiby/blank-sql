@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { CSSProperties, ReactNode } from 'react'
 
 import Head from 'next/head'
 
@@ -10,6 +10,10 @@ type Props = {
   children: ReactNode
 }
 
+const mainContentStyle: CSSProperties = {
+  paddingTop: size.headerHeight + 15,
+}
+
 export default function BaseLayout({ children }: Props) {
   return (
     <>
@@ -19,9 +23,7 @@ export default function BaseLayout({ children }: Props) {
       </Head>
       <PageHeader />
       <main
-        style={{
-          paddingTop: size.headerHeight + 15,
-        }}
+        style={mainContentStyle}
         className={`flex min-h-screen flex-col items-center justify-center`}
       >
         {children}

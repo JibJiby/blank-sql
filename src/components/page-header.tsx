@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 
 import Link from 'next/link'
 
@@ -20,12 +20,14 @@ import {
 import { size } from '@/styles/size'
 import { zIdx } from '@/styles/z-index'
 
+const headerStyle: CSSProperties = {
+  height: size.headerHeight,
+}
+
 export function PageHeader() {
   return (
     <header
-      style={{
-        height: size.headerHeight,
-      }}
+      style={headerStyle}
       className={`fixed z-${zIdx.header} top-0 w-full  flex justify-between py-4 px-8`}
     >
       <div className="flex items-center justify-between w-full h-full font-bold">
