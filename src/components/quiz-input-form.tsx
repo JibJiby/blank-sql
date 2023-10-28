@@ -75,35 +75,32 @@ type QuizInputFormFieldsProps = {
 }
 
 function QuizInputFormFields({ length, form }: QuizInputFormFieldsProps) {
-  return (
-    // eslint-disable-next-line no-unused-vars
-    range(length).map((_, idx) => (
-      <FormField
-        key={`generateFormFields-${idx + 1}`}
-        name={idx.toString()}
-        control={form.control}
-        render={({ field }) => (
-          <FormItem className="pb-4">
-            <div className="inline-flex items-center">
-              <FormLabel className="min-w-[26px] p-2 select-none">
-                {idx + 1}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  className="mt-0 ml-4"
-                  placeholder={`${idx + 1} 번째 빈칸`}
-                  {...field}
-                />
-              </FormControl>
+  return range(length).map((_, idx) => (
+    <FormField
+      key={`generateFormFields-${idx + 1}`}
+      name={idx.toString()}
+      control={form.control}
+      render={({ field }) => (
+        <FormItem className="pb-4">
+          <div className="inline-flex items-center">
+            <FormLabel className="min-w-[26px] p-2 select-none">
+              {idx + 1}
+            </FormLabel>
+            <FormControl>
+              <Input
+                className="mt-0 ml-4"
+                placeholder={`${idx + 1} 번째 빈칸`}
+                {...field}
+              />
+            </FormControl>
+          </div>
+          {form.formState.errors[idx]?.message && (
+            <div className="flex flex-row-reverse pr-2">
+              <FormMessage />
             </div>
-            {form.formState.errors[idx]?.message && (
-              <div className="flex flex-row-reverse pr-2">
-                <FormMessage />
-              </div>
-            )}
-          </FormItem>
-        )}
-      />
-    ))
-  )
+          )}
+        </FormItem>
+      )}
+    />
+  ))
 }

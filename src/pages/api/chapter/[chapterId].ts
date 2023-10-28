@@ -4,11 +4,8 @@ import {
   PrismaClientKnownRequestError,
   PrismaClientUnknownRequestError,
 } from '@prisma/client/runtime/library'
-import { container } from 'tsyringe'
 
-import { ChapterService } from '@/server/services/chapter.service'
-
-const chapterService = container.resolve(ChapterService)
+import { chapterService } from '@/server/services'
 
 export default async function handler(
   req: NextApiRequest,

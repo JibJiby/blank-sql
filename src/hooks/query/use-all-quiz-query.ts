@@ -2,16 +2,17 @@ import { useQuery } from '@tanstack/react-query'
 
 import { api } from '@/lib/axios'
 
+import { Chapter } from '@/models/chapter'
 import { Quiz } from '@/models/quiz'
 
 import { time } from './constants'
 
-export const useSingleQuizQuery = (quizId: string) => {
-  const query = useQuery<Quiz>({
-    queryKey: ['quizzes', quizId],
+export const useAllQuizQuery = () => {
+  const query = useQuery<(Quiz & { chapter: Chapter })[]>({
+    queryKey: ['quizzes'],
     queryFn: async () => {
       try {
-        const res = await api(`/quiz/${quizId}`)
+        const res = await api.get(`/quiz`)
         return res.data
       } catch (err) {
         console.error(err)
@@ -19,12 +20,10 @@ export const useSingleQuizQuery = (quizId: string) => {
       }
     },
     meta: {
-      errorMessage: '퀴즈 데이터를 서버로부터 가져오지 못했습니다.',
+      errorMessage: '퀴즈 목록을 가져오는데 문제가 발생했습니다',
     },
-    enabled: !!quizId,
     staleTime: time.DAY,
     cacheTime: Infinity,
-    initialData: undefined,
   })
 
   return query

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { UseQueryOptions, useQuery } from '@tanstack/react-query'
 
 import { api } from '@/lib/axios'
 
@@ -6,7 +6,9 @@ import { Chapter } from '@/models/chapter'
 
 import { time } from './constants'
 
-export const useChapterQuery = () => {
+type Options = Pick<UseQueryOptions, 'suspense'> | undefined
+
+export const useChapterQuery = (options: Options = undefined) => {
   const query = useQuery<Chapter[]>({
     queryKey: ['chapters'],
     queryFn: async () => {
@@ -15,6 +17,9 @@ export const useChapterQuery = () => {
     },
     placeholderData: [],
     staleTime: time.HOUR,
+
+    // override
+    suspense: !!options?.suspense,
   })
 
   return query

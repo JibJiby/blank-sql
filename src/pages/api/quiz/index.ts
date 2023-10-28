@@ -1,17 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { container } from 'tsyringe'
-
-import { QuizService } from '@/server/services/quiz.service'
-
-const quizService = container.resolve(QuizService)
+import { quizService } from '@/server/services'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const quizzes = await quizService.getAllQuizzes()
+    const { page, size } = req.query as { [key: string]: string | undefined }
+    if (page && size) {
+      const quizzes = await quizService.getQuizPagination(
+        parseInt(page, 10),
+        parseInt(size, 10)
+      )
+      return res.status(200).json(quizzes)
+    }
+    const quizzes = await quizService.getAllQuiz()
     return res.status(200).json(quizzes)
   } else if (req.method === 'POST') {
     // ...

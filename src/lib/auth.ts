@@ -1,5 +1,11 @@
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from 'next'
+
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import { NextAuthOptions } from 'next-auth'
+import { NextAuthOptions, getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
 import { db } from '@/lib/db'
@@ -53,4 +59,15 @@ export const authOptions: NextAuthOptions = {
       }
     },
   },
+}
+
+// serverside session helper
+// ref) https://next-auth.js.org/configuration/nextjs#getserversession
+export function auth(
+  ...args:
+    | [GetServerSidePropsContext['req'], GetServerSidePropsContext['res']]
+    | [NextApiRequest, NextApiResponse]
+    | []
+) {
+  return getServerSession(...args, authOptions)
 }
