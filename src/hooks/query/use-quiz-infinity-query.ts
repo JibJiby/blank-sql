@@ -29,7 +29,7 @@ export const useQuizInfinityQuery = ({ size }: Params) => {
     meta: {
       errorMessage: '퀴즈 목록을 가져오는데 문제가 발생했습니다',
     },
-    // enabled: !!page,
+    enabled: false,
     staleTime: time.DAY,
     cacheTime: Infinity,
   })

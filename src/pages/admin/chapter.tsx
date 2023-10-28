@@ -15,10 +15,10 @@ import { userService } from '@/server/services'
 const QUIZ_LIST_VIEWER_HEIGHT = 450
 const viewerStyle: CSSProperties = { height: QUIZ_LIST_VIEWER_HEIGHT }
 
-const ChapterListViewer = dynamic(
+const AdminChapterTable = dynamic(
   () =>
-    import('@/components/admin/chapter-list-viewer').then(
-      (mod) => mod.ChapterListViewer
+    import('@/components/admin/admin-chapter-table').then(
+      (mod) => mod.AdminChapterTable
     ),
   {
     loading: () => <Skeleton className="w-full" style={viewerStyle} />,
@@ -31,7 +31,7 @@ export default function ChapterAdminPage() {
     <BaseLayout>
       <div className="flex flex-col max-w-2xl  w-[80%] border rounded-md">
         <div className="overflow-x-auto scrollbar-hide" style={viewerStyle}>
-          <ChapterListViewer />
+          <AdminChapterTable />
         </div>
         <div>
           <ChapterGenerator />

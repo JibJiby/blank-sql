@@ -1,15 +1,14 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { toast } from 'sonner'
 
+import { BasicReactTable } from '@/components/basic-react-table'
 import { useChapterTableColumns } from '@/components/columns/chapter'
 
 import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'
 import { useChapterQuery } from '@/hooks/query/use-chapter-query'
 
-import { BasicReactTable } from './basic-react-table'
-
-export function ChapterListViewer() {
+export function AdminChapterTable() {
   const deleteMutation = useDeleteChapterMutation({
     successFeedback: () => toast.success('🗑️ 해당 챕터를 삭제 완료했습니다'),
     errorFeedback: () =>

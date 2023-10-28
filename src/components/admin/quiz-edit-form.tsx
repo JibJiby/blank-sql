@@ -53,9 +53,6 @@ const QuizEditor = dynamic(() => import('@/components/admin/quiz-editor'), {
 
 //
 type FormValue = Pick<z.infer<typeof QuizSchema>, 'chapterId' | 'quiz'> & {
-  // NOTE: 기존 QuizSchema 에선 answer 가 string 이지만 form 내에선 nested object 로 다루고
-  // API 요청 payload 에선 stringify
-  // TODO: 더 나은 방식 찾기 (answer_[idx] 에 대해선 answerSchema 에서 처리)
   [key: string]: Record<number, string>
 }
 
