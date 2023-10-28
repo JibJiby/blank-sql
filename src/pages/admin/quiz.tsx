@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   Dispatch,
   SetStateAction,
   createContext,
@@ -30,6 +31,7 @@ import BaseLayout from '@/layouts/base-layout'
 import { userService } from '@/server/services'
 
 const QUIZ_LIST_VIEWER_HEIGHT = 450
+const viewerStyle: CSSProperties = { height: QUIZ_LIST_VIEWER_HEIGHT }
 
 const QuizListViewer = dynamic(
   () =>
@@ -37,12 +39,7 @@ const QuizListViewer = dynamic(
       (mod) => mod.QuizListViewer
     ),
   {
-    loading: () => (
-      <Skeleton
-        className="w-full"
-        style={{ height: QUIZ_LIST_VIEWER_HEIGHT }}
-      />
-    ),
+    loading: () => <Skeleton className="w-full" style={viewerStyle} />,
     ssr: false,
   }
 )
@@ -59,10 +56,7 @@ export default function QuizAdminPage() {
           <div className="px-6 py-4">
             <ChapterFilter />
           </div>
-          <div
-            className="overflow-x-auto scrollbar-hide"
-            style={{ height: QUIZ_LIST_VIEWER_HEIGHT }}
-          >
+          <div className="overflow-x-auto scrollbar-hide" style={viewerStyle}>
             <QuizListViewer />
           </div>
           <div className="flex flex-row-reverse px-10 py-6">
