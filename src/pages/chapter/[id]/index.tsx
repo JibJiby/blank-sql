@@ -47,12 +47,8 @@ export default function ChapterQuizResolverPage() {
       ? quizzesInChapter[sequence]
       : null
 
-  const handleCopyButton = () => {
-    if (quiz) {
-      navigator.clipboard.writeText(quiz.id)
-      toast.success('복사 완료 🚀')
-    }
-  }
+  const feedbackSuccessCopy = () => toast.success('복사 완료 🚀')
+  const feedbackFailureCopy = () => toast.success('복사 실패 😭')
 
   const handleSuccess = async () => {
     if (sequence + 1 === quizzesInChapterLength) {
@@ -91,17 +87,20 @@ export default function ChapterQuizResolverPage() {
     return
   }
 
+  // TODO: quiz fetcher 와 suspense 를 분리하기
   return (
     <BaseLayout>
       <div className="flex items-center py-8 space-x-6">
-        <span className="select-none">
-          퀴즈 ID : {quizzesInChapter.at(sequence)?.id || ''}
-        </span>
-        <CopyButton onCopy={handleCopyButton} />
+        <span className="select-none">퀴즈 ID : {quiz?.id || ''}</span>
+        <CopyButton
+          data={quiz?.id || ''}
+          onSuccess={feedbackSuccessCopy}
+          onError={feedbackFailureCopy}
+        />
       </div>
-      <QuizEditor readOnly value={quizzesInChapter.at(sequence)?.quiz} />
+      <QuizEditor readOnly value={quiz?.quiz} />
       <QuizInputForm
-        quiz={quizzesInChapter[sequence]}
+        quiz={quiz!}
         onSuccess={handleSuccess}
         onFailure={handleFailure}
       />
@@ -109,11 +108,31 @@ export default function ChapterQuizResolverPage() {
   )
 }
 
-type CopyButtonProps = {
-  onCopy: () => void
+type CopyButtonProps<TData extends string> = {
+  data: TData
+  onSuccess?: () => void
+  onError?: () => void
 }
 
-function CopyButton({ onCopy }: CopyButtonProps) {
+function CopyButton<TData extends string>({
+  data,
+  onSuccess,
+  onError,
+}: CopyButtonProps<TData>) {
+  const handleCopy = async () => {
+    try {
+      if (!data) {
+        return
+      }
+
+      await navigator.clipboard.writeText(data)
+      onSuccess && onSuccess()
+    } catch (err) {
+      console.error(err)
+      onError && onError()
+    }
+  }
+
   return (
     <TooltipProvider delayDuration={0} skipDelayDuration={300}>
       <Tooltip>
@@ -122,7 +141,7 @@ function CopyButton({ onCopy }: CopyButtonProps) {
             variant="outline"
             size="icon"
             className="w-[30px] h-[30px]"
-            onClick={onCopy}
+            onClick={handleCopy}
           >
             <Copy width={15} height={15} />
           </Button>
