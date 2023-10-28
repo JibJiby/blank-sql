@@ -7,11 +7,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const { page, size } = req.query as { [key: string]: string }
-    const quizzes = await quizService.getAllQuizzes(
-      parseInt(page, 10),
-      parseInt(size, 10)
-    )
+    const { page, size } = req.query as { [key: string]: string | undefined }
+    if (page && size) {
+      const quizzes = await quizService.getQuizPagination(
+        parseInt(page, 10),
+        parseInt(size, 10)
+      )
+      return res.status(200).json(quizzes)
+    }
+    const quizzes = await quizService.getAllQuiz()
     return res.status(200).json(quizzes)
   } else if (req.method === 'POST') {
     // ...

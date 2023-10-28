@@ -5,7 +5,21 @@ import { inject, singleton } from 'tsyringe'
 export class QuizService {
   constructor(@inject('PrismaClient') private db: PrismaClient) {}
 
-  public getAllQuizzes = async (page: number, size: number) => {
+  public getAllQuiz = async () => {
+    const quizzes = await this.db.quiz.findMany({
+      include: {
+        chapter: {
+          select: {
+            chapterName: true,
+          },
+        },
+      },
+    })
+
+    return quizzes
+  }
+
+  public getQuizPagination = async (page: number, size: number) => {
     const quizzes = await this.db.quiz.findMany({
       skip: (page - 1) * size,
       take: size,
