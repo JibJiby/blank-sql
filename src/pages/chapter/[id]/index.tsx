@@ -3,18 +3,11 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
-import { Copy } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 
+import { CopyButton } from '@/components/copy-button'
 import { QuizInputForm } from '@/components/quiz-input-form'
 
 import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
@@ -105,52 +98,5 @@ export default function ChapterQuizResolverPage() {
         onFailure={handleFailure}
       />
     </BaseLayout>
-  )
-}
-
-type CopyButtonProps<TData extends string> = {
-  data: TData
-  onSuccess?: () => void
-  onError?: () => void
-}
-
-function CopyButton<TData extends string>({
-  data,
-  onSuccess,
-  onError,
-}: CopyButtonProps<TData>) {
-  const handleCopy = async () => {
-    try {
-      if (!data) {
-        return
-      }
-
-      await navigator.clipboard.writeText(data)
-      onSuccess && onSuccess()
-    } catch (err) {
-      console.error(err)
-      onError && onError()
-    }
-  }
-
-  return (
-    <TooltipProvider delayDuration={0} skipDelayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="w-[30px] h-[30px]"
-            onClick={handleCopy}
-          >
-            <Copy width={15} height={15} />
-          </Button>
-        </TooltipTrigger>
-
-        <TooltipContent>
-          <p>복사하기</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
   )
 }
