@@ -23,7 +23,7 @@ import { size } from '@/styles/size'
 
 import BaseLayout from '@/layouts/base-layout'
 
-const QuizViewer = dynamic(() => import('@/components/quiz-viewer'), {
+const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
   loading: () => (
     <Skeleton
       style={{
@@ -99,7 +99,7 @@ export default function ChapterQuizResolverPage() {
         </span>
         <CopyButton onCopy={handleCopyButton} />
       </div>
-      <QuizViewer value={quizzesInChapter.at(sequence)?.quiz} />
+      <QuizEditor readOnly value={quizzesInChapter.at(sequence)?.quiz} />
       <QuizInputForm
         quiz={quizzesInChapter[sequence]}
         onSuccess={handleSuccess}

@@ -13,7 +13,7 @@ import { size } from '@/styles/size'
 
 import BaseLayout from '@/layouts/base-layout'
 
-const QuizViewer = dynamic(() => import('@/components/quiz-viewer'), {
+const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
   loading: () => (
     <Skeleton
       style={{
@@ -49,7 +49,7 @@ export default function SingleQuizResolverPage() {
 
   return (
     <BaseLayout>
-      <QuizViewer value={data.quiz} />
+      <QuizEditor readOnly value={data.quiz} />
       <QuizInputForm
         quiz={data}
         onSuccess={handleSuccess}
@@ -58,24 +58,3 @@ export default function SingleQuizResolverPage() {
     </BaseLayout>
   )
 }
-
-// // FIXME: Server RunTimeError (EMFILE: too many open files ...)
-// export const getServerSideProps = (async (context) => {
-//   // 직접 접근시 해당 데이터 없을 때,
-//   const quizId = context.query.id as string
-//   const quizService = container.resolve(QuizService)
-
-//   try {
-//     await quizService.findQuizById(quizId)
-//   } catch (err) {
-//     if (err instanceof PrismaClientKnownRequestError) {
-//       return {
-//         notFound: true,
-//       }
-//     }
-//   }
-
-//   return {
-//     props: {},
-//   }
-// }) satisfies GetServerSideProps<{}>
