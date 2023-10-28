@@ -221,4 +221,26 @@ npx prisma db push
 
 &nbsp;
 
+* lucide-react 관련 serverless 500 error
+
+
+
+NextJS SSR API 중 getServerSideProps 에서 발생했던 오류 메시지는 아래와 같음
+
+```
+[Error: EMFILE: too many open files, open '/var/task/node_modules/lucide-react/dist/esm/icons/server-crash.mjs'] {
+  errno: -24,
+  code: 'EMFILE',
+  syscall: 'open',
+  path: '/var/task/node_modules/lucide-react/dist/esm/icons/server-crash.mjs',
+  page: '/admin/quiz'
+}
+Error: Runtime exited with error: exit status 1
+Runtime.ExitError
+```
+
+[관련 이슈](https://github.com/phosphor-icons/react/issues/45) 에 따르면, NextJS 버전 업그레이드를 통해 해결할 수 있다고 한다. `next@^13.5.6` 으로 의존성 버전 변경 후 에러 해결됨.
+
+&nbsp;
+
 &nbsp;
