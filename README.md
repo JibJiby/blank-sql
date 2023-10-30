@@ -14,7 +14,7 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 
 
 
-<p align="center"><img src="images/screenshot_02.png" alt="screenshot_01" /></p>
+<p align="center"><img src="images/screenshot_02.png" alt="screenshot_01" width="600px"/></p>
 
 &nbsp;
 
