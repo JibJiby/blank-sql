@@ -256,8 +256,9 @@ npx prisma db push
 하면 아래와 같이 생성된걸 확인할 수 있다.
 
 
-
-<img src="images/image-20231017173346118.png" alt="planetscale-tables" style="zoom:50%;" />
+<p align="center">
+<img src="images/image-20231017173346118.png" alt="planetscale-tables" width="600px" />
+</p>
 
 &nbsp;
 
