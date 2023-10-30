@@ -7,9 +7,14 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 ## 🖥️ Screenshot
 
 <p align="center">
-  <img src="https://github.com/JibJiby/new-blanksql/assets/24295703/0301547e-9458-4cd0-bff4-9d978411b37e" alt="main page screenshot" width="600px"/>
+  <img src="images/screenshot_01.png" alt="main page screenshot" width="600px"/>
 </p>
 
+&nbsp;
+
+
+
+<p align="center"><img src="images/screenshot_02.png" alt="screenshot_01" /></p>
 
 &nbsp;
 
@@ -95,7 +100,54 @@ cp .env.example .env.local
 
 example 환경 변수 파일을 복사해서 local 환경 변수 파일을 생성해줍니다. google oauth 프로젝트 세팅 후 client_id 와 client_secret_key 를 입력해줍니다. 
 
-그리고 NextAuth.js 에 필요한 NEXTAUTH_URL 값과 NEXTAUTH_SECRET 값을 입력해줍니다.
+그리고 NextAuth.js 에 필요한 NEXTAUTH_URL 값과 NEXTAUTH_SECRET 값을 입력해줘야 합니다. 
+
+&nbsp;
+
+#### 예시
+
+예시로 로컬에서는 아래와 같이 입력해주었습니다. 
+
+&nbsp;
+
+* **NEXTAUTH_SECRET**
+
+jwt 토큰을 encrypt 하는데 사용하는 키 생성은 `openssl` 으로 생성해주었습니다. (암호화 알고리즘은 원하시는대로 정하셔서 키 생성해주시면 됩니다)
+
+```bash
+openssl rand -base64 64
+```
+
+&nbsp;
+
+* 구글 OAuth 로그인
+
+[구글 로그인 설정 방법](https://notspoon.tistory.com/45) 을 통해서 OAuth Client ID 와 보안 비밀번호를 환경 변수에 입력해줍니다. (프로젝트 생성 -> OAuth Callback URL 설정 -> ... )
+
+```
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+```
+
+&nbsp;
+
+그리고 `DATABASE_URL` 환경 변수는 아래 도커 세팅에서 추가하도록 합니다.
+
+&nbsp;
+
+* **정리**
+
+```
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET= [위에서 생성한 값]
+
+GOOGLE_CLIENT_ID= [OAuth Client ID 값]
+GOOGLE_CLIENT_SECRET= [OAuth Client 보안 비밀번호]
+
+DATABASE_URL= [아래에서 세팅]
+```
+
+
 
 &nbsp;
 
@@ -189,6 +241,12 @@ yarn seed
 
 ### Planetscale 세팅
 
+> Notice
+>
+> 로컬에서는 Planetscale 설정 생략하셔도 됩니다
+
+&nbsp;
+
 planetscale 에서 DB 생성 후 .env 를 수정한 다음에
 
 ```bash
@@ -239,7 +297,7 @@ Error: Runtime exited with error: exit status 1
 Runtime.ExitError
 ```
 
-[관련 이슈](https://github.com/phosphor-icons/react/issues/45) 에 따르면, NextJS 버전 업그레이드를 통해 해결할 수 있다고 한다. `next@^13.5.6` 으로 의존성 버전 변경 후 에러 해결됨.
+[관련 이슈](https://github.com/phosphor-icons/react/issues/45) 에 따르면, NextJS 최신 버전 업그레이드를 통해 해결할 수 있다고 한다. `next@^13.5.6` 으로 의존성 버전 변경 후 에러 해결됨.
 
 &nbsp;
 
