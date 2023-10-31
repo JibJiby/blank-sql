@@ -2,11 +2,16 @@
   "name": "blank-sql",
   "version": "0.1.0",
   "private": true,
-  "repository": "Jibjiby/blank-sql",
+  "description": "Service to study SQL by taking blank quizzes",
   "author": "Jibjiby <my01sun@gmail.com>",
   "engines": {
     "node": ">=16.14.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JibJiby/blank-sql.git"
+  },
+  "main": "none",
   "scripts": {
     "dev": "dotenv -e .env.local -- next dev",
     "build": "prisma generate && next build",
