@@ -35,7 +35,9 @@ export const useUpdateQuizMutation = ({
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['quizzes'])
+      queryClient.invalidateQueries(['quizzes'], {
+        type: 'all',
+      })
       successFeedback()
     },
     onError: () => {

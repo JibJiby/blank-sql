@@ -23,9 +23,10 @@ export const useDeleteQuizMutation = ({
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries(['quizzes'], {
+        type: 'all',
+      })
       successFeedback()
-
-      queryClient.invalidateQueries(['paging', 'quizzes'])
     },
     onError: () => {
       errorFeedback()
