@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -30,6 +31,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 import { ChapterSelectItems } from '@/components/admin/chapter-select-items'
 
+import { resizeAnswerObject } from '@/lib/quiz/resize-answer-object'
 import { range } from '@/lib/utils'
 
 import { useCreateQuizMutation } from '@/hooks/mutation/use-create-quiz-mutation'
@@ -38,7 +40,7 @@ import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
 import { size } from '@/styles/size'
 
-import { QuizSchema } from '@/models/quiz'
+import { Quiz } from '@/models/quiz'
 
 const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
   loading: () => (
@@ -51,12 +53,10 @@ const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
   ),
 })
 
-//
-type FormValue = Pick<z.infer<typeof QuizSchema>, 'chapterId' | 'quiz'> & {
-  [key: string]: Record<number, string>
-}
-
 const answerSchema = z.record(z.string().min(1))
+type FormValue = Pick<Quiz, 'chapterId' | 'quiz'> & {
+  answer: z.infer<typeof answerSchema>
+}
 
 type QuizEditFormProps = {
   quizId?: string
@@ -66,6 +66,7 @@ export function QuizEditForm({ quizId }: QuizEditFormProps) {
   const router = useRouter()
   const form = useForm<FormValue>({
     defaultValues: { chapterId: '', quiz: '', answer: {} },
+    // resolver: zodResolver(QuizSchema.merge(z.object({ answer: answerSchema }))),
   })
   const [blankCount, setBlankCount] = useState(0)
   const {
@@ -97,6 +98,12 @@ export function QuizEditForm({ quizId }: QuizEditFormProps) {
     const quizString = values.quiz
 
     const identifiedBlankCount = quizString.match(/_{4}/g)?.length || 0
+    const newAnswerObj = resizeAnswerObject({
+      oldObject: values.answer,
+      updatedSize: identifiedBlankCount,
+    })
+    form.setValue('answer', newAnswerObj)
+
     setBlankCount(identifiedBlankCount)
   }
 
