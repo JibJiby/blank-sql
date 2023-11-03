@@ -39,6 +39,9 @@ export class QuizService {
       where: {
         chapterId,
       },
+      orderBy: {
+        priority: 'asc',
+      },
     })
 
     return quizzes
