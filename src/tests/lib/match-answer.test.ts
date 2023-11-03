@@ -1,4 +1,4 @@
-import { matchAnswer } from '@/lib/match-answer'
+import { matchAnswer } from '@/lib/quiz/match-answer'
 
 describe('matchAnswer 함수', () => {
   // answerObject

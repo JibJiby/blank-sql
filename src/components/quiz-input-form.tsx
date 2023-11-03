@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import { QuizAnswer, matchAnswer } from '@/lib/match-answer'
+import { QuizAnswer, matchAnswer } from '@/lib/quiz/match-answer'
 import { range } from '@/lib/utils'
 
 import { Quiz } from '@/models/quiz'
