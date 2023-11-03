@@ -1,0 +1,7 @@
+# Block
+User-agent: *
+Disallow: /admin
+
+# Allow
+User-agent: *
+Allow: /
