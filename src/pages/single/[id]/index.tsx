@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { toast } from 'sonner'
@@ -48,13 +49,18 @@ export default function SingleQuizResolverPage() {
   }
 
   return (
-    <BaseLayout>
-      <QuizEditor readOnly value={data.quiz} />
-      <QuizInputForm
-        quiz={data}
-        onSuccess={handleSuccess}
-        onFailure={handleFailure}
-      />
-    </BaseLayout>
+    <>
+      <Head>
+        <title>단일 퀴즈 풀기</title>
+      </Head>
+      <BaseLayout>
+        <QuizEditor readOnly value={data.quiz} />
+        <QuizInputForm
+          quiz={data}
+          onSuccess={handleSuccess}
+          onFailure={handleFailure}
+        />
+      </BaseLayout>
+    </>
   )
 }

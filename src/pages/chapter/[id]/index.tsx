@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import dynamic from 'next/dynamic'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { toast } from 'sonner'
@@ -82,21 +83,26 @@ export default function ChapterQuizResolverPage() {
 
   // TODO: quiz fetcher 와 suspense 를 분리하기
   return (
-    <BaseLayout>
-      <div className="flex items-center py-8 space-x-6">
-        <span className="select-none">퀴즈 ID : {quiz?.id || ''}</span>
-        <CopyButton
-          data={quiz?.id || ''}
-          onSuccess={feedbackSuccessCopy}
-          onError={feedbackFailureCopy}
+    <>
+      <Head>
+        <title>챕터별 문제풀기</title>
+      </Head>
+      <BaseLayout>
+        <div className="flex items-center py-8 space-x-6">
+          <span className="select-none">퀴즈 ID : {quiz?.id || ''}</span>
+          <CopyButton
+            data={quiz?.id || ''}
+            onSuccess={feedbackSuccessCopy}
+            onError={feedbackFailureCopy}
+          />
+        </div>
+        <QuizEditor readOnly value={quiz?.quiz} />
+        <QuizInputForm
+          quiz={quiz!}
+          onSuccess={handleSuccess}
+          onFailure={handleFailure}
         />
-      </div>
-      <QuizEditor readOnly value={quiz?.quiz} />
-      <QuizInputForm
-        quiz={quiz!}
-        onSuccess={handleSuccess}
-        onFailure={handleFailure}
-      />
-    </BaseLayout>
+      </BaseLayout>
+    </>
   )
 }

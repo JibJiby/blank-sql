@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 
 import { motion } from 'framer-motion'
@@ -14,24 +15,29 @@ const SUB_COPYWRITING_02 = '필요한 개념만 🟢'
 
 export default function AboutPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="flex flex-col justify-center space-y-8 select-none">
-        <CopyWriting />
-        <motion.div
-          className="flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-        >
-          <Link
-            href="/login"
-            className={cn(buttonVariants({ variant: 'outline' }), 'text-md')}
+    <>
+      <Head>
+        <title>소개 페이지</title>
+      </Head>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col justify-center space-y-8 select-none">
+          <CopyWriting />
+          <motion.div
+            className="flex justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
           >
-            로그인 하러 가기
-          </Link>
-        </motion.div>
+            <Link
+              href="/login"
+              className={cn(buttonVariants({ variant: 'outline' }), 'text-md')}
+            >
+              로그인 하러 가기
+            </Link>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -1,4 +1,5 @@
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -32,11 +33,16 @@ export default function ChapterQuizPage({
   }
 
   return (
-    <BaseLayout>
-      <div className="flex flex-col items-center w-[85%] max-w-md space-y-8 max-h-[450px] overflow-scroll scrollbar-hide">
-        {renderChapterList(chapters)}
-      </div>
-    </BaseLayout>
+    <>
+      <Head>
+        <title>챕터 목록</title>
+      </Head>
+      <BaseLayout>
+        <div className="flex flex-col items-center w-[85%] max-w-md space-y-8 max-h-[450px] overflow-scroll scrollbar-hide">
+          {renderChapterList(chapters)}
+        </div>
+      </BaseLayout>
+    </>
   )
 }
 

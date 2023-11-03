@@ -1,5 +1,6 @@
 import { KeyboardEvent, useEffect, useRef } from 'react'
 
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { useQueryClient } from '@tanstack/react-query'
@@ -59,22 +60,27 @@ export default function SingleQuizPage() {
   }, [])
 
   return (
-    <BaseLayout>
-      <div className="flex flex-col space-y-8 min-w-[350px]">
-        <TypographyH3 className="text-center select-none">
-          퀴즈 <strong className="text-accent-foreground">ID</strong> 를
-          입력해주세요
-        </TypographyH3>
-        <Input
-          ref={inputRef}
-          className="text-center"
-          placeholder="퀴즈 ID"
-          onKeyDown={onKeyDown}
-        />
-        <Button className="w-full" onClick={handleQuizIdInput}>
-          풀러가기
-        </Button>
-      </div>
-    </BaseLayout>
+    <>
+      <Head>
+        <title>퀴즈 검색</title>
+      </Head>
+      <BaseLayout>
+        <div className="flex flex-col space-y-8 min-w-[350px]">
+          <TypographyH3 className="text-center select-none">
+            퀴즈 <strong className="text-accent-foreground">ID</strong> 를
+            입력해주세요
+          </TypographyH3>
+          <Input
+            ref={inputRef}
+            className="text-center"
+            placeholder="퀴즈 ID"
+            onKeyDown={onKeyDown}
+          />
+          <Button className="w-full" onClick={handleQuizIdInput}>
+            풀러가기
+          </Button>
+        </div>
+      </BaseLayout>
+    </>
   )
 }
