@@ -2,7 +2,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
+import { useSingleQuizQuery } from '@/hooks/query/quiz/use-single-quiz-query'
 
 describe('Test useSingleQuizQuery Hook', () => {
   let createWrapper: () => ({

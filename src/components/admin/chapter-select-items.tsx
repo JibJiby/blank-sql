@@ -1,6 +1,6 @@
 import { SelectItem } from '@/components/ui/select'
 
-import { useChapterQuery } from '@/hooks/query/use-chapter-query'
+import { useChapterQuery } from '@/hooks/query/chapter/use-chapter-query'
 
 export function ChapterSelectItems() {
   const { data: chapters, isLoading } = useChapterQuery()

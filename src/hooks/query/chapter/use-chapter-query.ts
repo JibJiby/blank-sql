@@ -4,7 +4,7 @@ import { api } from '@/lib/axios'
 
 import { Chapter } from '@/models/chapter'
 
-import { time } from './constants'
+import { time } from '../constants'
 
 type Options = Pick<UseQueryOptions, 'suspense'> | undefined
 

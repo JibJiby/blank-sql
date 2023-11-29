@@ -5,7 +5,7 @@ import { api } from '@/lib/axios'
 import { Chapter } from '@/models/chapter'
 import { Quiz } from '@/models/quiz'
 
-import { time } from './constants'
+import { time } from '../constants'
 
 export const useAllQuizQuery = () => {
   const query = useQuery<(Quiz & { chapter: Chapter })[]>({

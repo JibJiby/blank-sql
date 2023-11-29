@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import { useCreateChapterMutation } from '@/hooks/mutation/use-create-chapter-mutation'
+import { useCreateChapterMutation } from '@/hooks/mutation/chapter/use-create-chapter-mutation'
 
 import { ChapterSchema } from '@/models/chapter'
 

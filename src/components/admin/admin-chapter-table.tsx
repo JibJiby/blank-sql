@@ -4,9 +4,9 @@ import { toast } from 'sonner'
 import { useChapterTableColumns } from '@/components/admin/columns/chapter'
 import { BasicReactTable } from '@/components/common/basic-react-table'
 
-import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
-import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'
-import { useChapterQuery } from '@/hooks/query/use-chapter-query'
+import { useDeleteChapterMutation } from '@/hooks/mutation/chapter/use-delete-chapter-mutation'
+import { useUpdateChapterMutation } from '@/hooks/mutation/chapter/use-update-chapter-mutation'
+import { useChapterQuery } from '@/hooks/query/chapter/use-chapter-query'
 
 export function AdminChapterTable() {
   const deleteMutation = useDeleteChapterMutation({

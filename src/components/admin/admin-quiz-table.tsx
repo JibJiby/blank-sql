@@ -21,8 +21,8 @@ import { ChapterSelectItems } from '@/components/admin/chapter-select-items'
 import { useQuizTableColumns } from '@/components/admin/columns/quiz'
 import { BasicReactTable } from '@/components/common/basic-react-table'
 
-import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation'
-import { useAllQuizQuery } from '@/hooks/query/use-all-quiz-query'
+import { useDeleteQuizMutation } from '@/hooks/mutation/quiz/use-delete-quiz-mutation'
+import { useAllQuizQuery } from '@/hooks/query/quiz/use-all-quiz-query'
 
 export function AdminQuizTable() {
   const deleteMutation = useDeleteQuizMutation({

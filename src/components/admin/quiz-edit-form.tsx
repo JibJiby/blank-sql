@@ -34,9 +34,9 @@ import { ChapterSelectItems } from '@/components/admin/chapter-select-items'
 import { resizeAnswerObject } from '@/lib/quiz/resize-answer-object'
 import { range } from '@/lib/utils'
 
-import { useCreateQuizMutation } from '@/hooks/mutation/use-create-quiz-mutation'
-import { useUpdateQuizMutation } from '@/hooks/mutation/use-update-quiz-mutation'
-import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
+import { useCreateQuizMutation } from '@/hooks/mutation/quiz/use-create-quiz-mutation'
+import { useUpdateQuizMutation } from '@/hooks/mutation/quiz/use-update-quiz-mutation'
+import { useSingleQuizQuery } from '@/hooks/query/quiz/use-single-quiz-query'
 
 import { size } from '@/styles/size'
 

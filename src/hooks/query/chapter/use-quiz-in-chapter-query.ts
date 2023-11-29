@@ -6,7 +6,7 @@ import { api } from '@/lib/axios'
 
 import { Quiz } from '@/models/quiz'
 
-import { time } from './constants'
+import { time } from '../constants'
 
 export const useQuizInChapterQuery = (chapterId: string) => {
   const queryClient = useQueryClient()

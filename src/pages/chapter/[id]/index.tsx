@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { CopyButton } from '@/components/common/copy-button'
 import { QuizInputForm } from '@/components/common/quiz-input-form'
 
-import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
+import { useQuizInChapterQuery } from '@/hooks/query/chapter/use-quiz-in-chapter-query'
 
 import { size } from '@/styles/size'
 

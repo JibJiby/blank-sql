@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 import { QuizInputForm } from '@/components/common/quiz-input-form'
 
-import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
+import { useSingleQuizQuery } from '@/hooks/query/quiz/use-single-quiz-query'
 
 import { size } from '@/styles/size'
 
