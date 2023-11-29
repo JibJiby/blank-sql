@@ -63,7 +63,8 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 ├── src     # main source code
 │   ├── components  # 컴포넌트
 │   │   ├── ui      # shadcn/ui 재사용 UI 컴포넌트
-│   │   └── ...     # 이외 프로젝트 내 커스텀 컴포넌트
+│   │   ├── common  # 공통 컴포넌트
+│   │   └── admin   # 어드민 페이지에서만 사용하는 컴포넌트
 │   ├── hooks
 │   │   ├── query   # react-query 관련 hook
 │   │   └── ...     # 이외 client-side custom hook
@@ -85,6 +86,8 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 * 참고
 
 따로 server 디렉토리로 나누어 하위에 `[__도메인__].service.ts` 로 분리한 이유는 추후 서버 프레임워크로 구조 그대로 마이그레이션 하기 용이하도록 구성
+
+NextJS 의 실험 기능인 `instrumentation` 을 사용하지 않아도 가능. 직접 `src/lib/db.ts` 에 있는 싱글톤 **db 인스턴스**를 참조하면 동일하게 동작함
 
 &nbsp;
 
