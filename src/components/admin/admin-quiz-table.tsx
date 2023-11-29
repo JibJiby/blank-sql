@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/select'
 
 import { ChapterSelectItems } from '@/components/admin/chapter-select-items'
-import { useQuizTableColumns } from '@/components/columns/quiz'
+import { useQuizTableColumns } from '@/components/admin/columns/quiz'
 import { BasicReactTable } from '@/components/common/basic-react-table'
 
 import { useDeleteQuizMutation } from '@/hooks/mutation/use-delete-quiz-mutation'
