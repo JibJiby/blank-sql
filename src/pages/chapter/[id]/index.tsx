@@ -8,8 +8,8 @@ import { toast } from 'sonner'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { CopyButton } from '@/components/copy-button'
-import { QuizInputForm } from '@/components/quiz-input-form'
+import { CopyButton } from '@/components/common/copy-button'
+import { QuizInputForm } from '@/components/common/quiz-input-form'
 
 import { useQuizInChapterQuery } from '@/hooks/query/use-quiz-in-chapter-query'
 
@@ -17,7 +17,7 @@ import { size } from '@/styles/size'
 
 import BaseLayout from '@/layouts/base-layout'
 
-const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
+const QuizEditor = dynamic(() => import('@/components/common/quiz-editor'), {
   loading: () => (
     <Skeleton
       style={{

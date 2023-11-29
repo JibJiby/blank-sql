@@ -42,7 +42,7 @@ import { size } from '@/styles/size'
 
 import { Quiz } from '@/models/quiz'
 
-const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
+const QuizEditor = dynamic(() => import('@/components/common/quiz-editor'), {
   loading: () => (
     <Skeleton
       style={{

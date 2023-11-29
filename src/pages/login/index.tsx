@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 
 import { buttonVariants } from '@/components/ui/button'
 
-import { UserAuthForm } from '@/components/user-auth-form'
+import { UserAuthForm } from '@/components/common/user-auth-form'
 
 import { cn } from '@/lib/utils'
 

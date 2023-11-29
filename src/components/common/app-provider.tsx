@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 
-import { ThemeProvider } from '@/components/theme-provider'
+import { ThemeProvider } from '@/components/common/theme-provider'
 
 import { queryClient } from '@/lib/query'
 

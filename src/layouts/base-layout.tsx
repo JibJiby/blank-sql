@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode } from 'react'
 
 import Head from 'next/head'
 
-import { PageHeader } from '@/components/page-header'
+import { PageHeader } from '@/components/common/page-header'
 
 import { size } from '@/styles/size'
 

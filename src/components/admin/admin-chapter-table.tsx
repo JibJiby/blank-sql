@@ -1,8 +1,8 @@
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { toast } from 'sonner'
 
-import { BasicReactTable } from '@/components/basic-react-table'
 import { useChapterTableColumns } from '@/components/columns/chapter'
+import { BasicReactTable } from '@/components/common/basic-react-table'
 
 import { useDeleteChapterMutation } from '@/hooks/mutation/use-delete-chapter-mutation'
 import { useUpdateChapterMutation } from '@/hooks/mutation/use-update-chapter-mutation'

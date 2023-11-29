@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 
 import { Toaster } from 'sonner'
 
-import { AppProvider } from '@/components/app-provider'
+import { AppProvider } from '@/components/common/app-provider'
 
 import '@/styles/globals.css'
 

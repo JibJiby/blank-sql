@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 import { Skeleton } from '@/components/ui/skeleton'
 
-import { QuizInputForm } from '@/components/quiz-input-form'
+import { QuizInputForm } from '@/components/common/quiz-input-form'
 
 import { useSingleQuizQuery } from '@/hooks/query/use-single-quiz-query'
 
@@ -14,7 +14,7 @@ import { size } from '@/styles/size'
 
 import BaseLayout from '@/layouts/base-layout'
 
-const QuizEditor = dynamic(() => import('@/components/quiz-editor'), {
+const QuizEditor = dynamic(() => import('@/components/common/quiz-editor'), {
   loading: () => (
     <Skeleton
       style={{

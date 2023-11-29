@@ -2,7 +2,7 @@ import { generateMock } from '@anatine/zod-mock'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { QuizInputForm } from '@/components/quiz-input-form'
+import { QuizInputForm } from '@/components/common/quiz-input-form'
 
 import { Quiz, QuizSchema } from '@/models/quiz'
 
