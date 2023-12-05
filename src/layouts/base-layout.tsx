@@ -11,7 +11,7 @@ type Props = {
 }
 
 const mainContentStyle: CSSProperties = {
-  paddingTop: size.headerHeight + 15,
+  paddingTop: size.headerHeight + 30,
 }
 
 export default function BaseLayout({ children }: Props) {
@@ -24,7 +24,7 @@ export default function BaseLayout({ children }: Props) {
       <PageHeader />
       <main
         style={mainContentStyle}
-        className={`flex min-h-screen flex-col items-center justify-start`}
+        className={`flex min-h-screen flex-col items-center max-sm:justify-start sm:justify-center`}
       >
         {children}
       </main>
