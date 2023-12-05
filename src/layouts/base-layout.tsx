@@ -24,7 +24,7 @@ export default function BaseLayout({ children }: Props) {
       <PageHeader />
       <main
         style={mainContentStyle}
-        className={`flex min-h-screen flex-col items-center justify-center`}
+        className={`flex min-h-screen flex-col items-center justify-start`}
       >
         {children}
       </main>
