@@ -24,7 +24,7 @@ const chapterQuiz = 'chapter'
 export default function Home() {
   const router = useRouter()
 
-  const onClick = () => {
+  const handleClick = () => {
     const el = document.querySelector('button[data-state="checked"]')
     if (!el) {
       return
@@ -50,7 +50,7 @@ export default function Home() {
           <CardContent>
             <RadioGroup
               defaultValue={singleQuiz}
-              className="grid grid-cols-2 gap-4"
+              className="grid grid-cols-2 gap-4 max-sm:grid-rows-2 max-sm:grid-cols-1"
             >
               <Label
                 htmlFor={singleQuiz}
@@ -81,7 +81,7 @@ export default function Home() {
             </RadioGroup>
           </CardContent>
           <CardFooter>
-            <Button className="w-full" onClick={onClick}>
+            <Button className="w-full" onClick={handleClick}>
               확인
             </Button>
           </CardFooter>
