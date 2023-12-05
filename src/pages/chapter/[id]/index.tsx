@@ -42,7 +42,7 @@ export default function ChapterQuizResolverPage() {
       : null
 
   const feedbackSuccessCopy = () => toast.success('복사 완료 🚀')
-  const feedbackFailureCopy = () => toast.success('복사 실패 😭')
+  const feedbackFailureCopy = () => toast.error('복사 실패 😭')
 
   const handleSuccess = async () => {
     if (sequence + 1 === quizzesInChapterLength) {
