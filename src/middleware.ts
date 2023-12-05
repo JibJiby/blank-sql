@@ -11,6 +11,10 @@ export default withAuth(
       req.nextUrl.pathname.startsWith('/login') ||
       req.nextUrl.pathname.startsWith('/register')
 
+    if (process.env.NODE_ENV === 'development') {
+      return null
+    }
+
     if (isAuthPage) {
       if (isAuth) {
         return NextResponse.redirect(new URL('/', req.url))
