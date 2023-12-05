@@ -44,7 +44,7 @@ export function PageHeader() {
   return (
     <header
       style={headerStyle}
-      className={`fixed z-${zIdx.header} top-0 w-full  flex justify-between py-4 pl-8 pr-4`}
+      className={`fixed z-${zIdx.header} top-0 w-full flex justify-between py-4 pl-8 pr-4 bg-background`}
     >
       <div className="flex items-center w-full h-full font-bold gap-x-4">
         <Link href="/">_____SQL</Link>
