@@ -88,7 +88,7 @@ function QuizInputFormFields({ length, form }: QuizInputFormFieldsProps) {
             </FormLabel>
             <FormControl>
               <Input
-                className="mt-0 ml-4"
+                className="mt-0 ml-4 max-sm:text-base"
                 placeholder={`${idx + 1} 번째 빈칸`}
                 {...field}
               />
