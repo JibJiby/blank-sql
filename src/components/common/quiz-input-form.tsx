@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -30,15 +32,19 @@ type Props = {
 }
 
 export const QuizInputForm = ({ quiz, onSuccess, onFailure }: Props) => {
+  const answer = useMemo(
+    () => JSON.parse(quiz.answer || '') as Record<string, string>,
+    [quiz]
+  )
+  const defaultValues = useMemo(
+    () => Object.keys(answer).reduce((acc, cur) => ({ ...acc, [cur]: '' }), {}),
+    [answer]
+  )
+  const length = useMemo(() => Object.keys(answer).length, [answer])
   const form = useForm<z.infer<typeof inputFormSchema>>({
     resolver: zodResolver(inputFormSchema),
-    defaultValues: {
-      // ref : https://github.com/shadcn-ui/ui/issues/410#issuecomment-1556705052
-      0: '',
-    },
+    defaultValues,
   })
-  const answer = JSON.parse(quiz.answer || '')
-  const length = Object.keys(answer).length
 
   const handleCompositionSubmit = (data: Object) => {
     if (!matchAnswer(data as QuizAnswer, answer)) {
