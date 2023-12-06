@@ -65,20 +65,22 @@ export default function SingleQuizPage() {
         <title>퀴즈 검색</title>
       </Head>
       <BaseLayout>
-        <div className="flex flex-col space-y-8 min-w-[350px]">
-          <TypographyH3 className="text-center select-none">
-            퀴즈 <strong className="text-accent-foreground">ID</strong> 를
-            입력해주세요
-          </TypographyH3>
-          <Input
-            ref={inputRef}
-            className="text-center"
-            placeholder="퀴즈 ID"
-            onKeyDown={onKeyDown}
-          />
-          <Button className="w-full" onClick={handleQuizIdInput}>
-            풀러가기
-          </Button>
+        <div className="flex items-center justify-center h-[75vh]">
+          <div className="flex flex-col space-y-8 min-w-[350px]">
+            <TypographyH3 className="text-center select-none">
+              퀴즈 <strong className="text-accent-foreground">ID</strong> 를
+              입력해주세요
+            </TypographyH3>
+            <Input
+              ref={inputRef}
+              className="text-center"
+              placeholder="퀴즈 ID"
+              onKeyDown={onKeyDown}
+            />
+            <Button className="w-full" onClick={handleQuizIdInput}>
+              풀러가기
+            </Button>
+          </div>
         </div>
       </BaseLayout>
     </>

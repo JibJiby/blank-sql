@@ -81,7 +81,7 @@ function QuizInputFormFields({ length, form }: QuizInputFormFieldsProps) {
       name={idx.toString()}
       control={form.control}
       render={({ field }) => (
-        <FormItem className="pb-4">
+        <FormItem className="pb-4 min-h-[90px]">
           <div className="inline-flex items-center">
             <FormLabel className="min-w-[26px] p-2 select-none">
               {idx + 1}

@@ -7,9 +7,6 @@ import BaseLayout from '@/layouts/base-layout'
 import { Chapter } from '@/models/chapter'
 import { chapterService } from '@/server/services'
 
-// TODO: react-query 해당 SIZE 이후로 pagination 으로 client 에서 불러오기
-// const VISIALBE_CHAPTERS_MIN_SIZE = 5
-
 export default function ChapterQuizPage({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -38,8 +35,10 @@ export default function ChapterQuizPage({
         <title>챕터 목록</title>
       </Head>
       <BaseLayout>
-        <div className="flex flex-col items-center w-[85%] max-w-md space-y-8 max-h-[450px] overflow-scroll scrollbar-hide">
-          {renderChapterList(chapters)}
+        <div className="flex items-center justify-center w-full h-[75vh]">
+          <div className="flex flex-col items-center w-[85%] max-w-md space-y-8 max-h-[450px] overflow-scroll scrollbar-hide">
+            {renderChapterList(chapters)}
+          </div>
         </div>
       </BaseLayout>
     </>
@@ -48,10 +47,6 @@ export default function ChapterQuizPage({
 
 export const getStaticProps = (async () => {
   const chapters = await chapterService.getAllChapters()
-  // const chapters = await chapterService.getChaptersPagination(
-  //   0,
-  //   VISIALBE_CHAPTERS_MIN_SIZE
-  // )
 
   return {
     props: {
