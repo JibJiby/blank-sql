@@ -60,6 +60,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
+  isPro         Boolean   @default(false) @map(name: "is_pro")
 
   role UserRole @default(User)
 
