@@ -86,6 +86,7 @@ function QuizInputFormFields({ length, form }: QuizInputFormFieldsProps) {
       key={`generateFormFields-${idx + 1}`}
       name={idx.toString()}
       control={form.control}
+      defaultValue=""
       render={({ field }) => (
         <FormItem className="pb-4 min-h-[90px]">
           <div className="inline-flex items-center">
