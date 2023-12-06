@@ -32,15 +32,15 @@ type Props = {
 }
 
 export const QuizInputForm = ({ quiz, onSuccess, onFailure }: Props) => {
-  const answer = useMemo(
-    () => JSON.parse(quiz.answer || '') as Record<string, string>,
-    [quiz]
-  )
-  const defaultValues = useMemo(
-    () => Object.keys(answer).reduce((acc, cur) => ({ ...acc, [cur]: '' }), {}),
-    [answer]
-  )
-  const length = useMemo(() => Object.keys(answer).length, [answer])
+  const { answer, defaultValues, length } = useMemo(() => {
+    const answer = JSON.parse(quiz.answer || '') as Record<string, string>
+    const defaultValues = Object.keys(answer).reduce(
+      (acc, cur) => ({ ...acc, [cur]: '' }),
+      {}
+    )
+    const length = Object.keys(answer).length
+    return { answer, defaultValues, length }
+  }, [quiz])
   const form = useForm<z.infer<typeof inputFormSchema>>({
     resolver: zodResolver(inputFormSchema),
     defaultValues,
