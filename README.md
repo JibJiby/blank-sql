@@ -77,8 +77,13 @@ SQL 을 처음 공부하는 사람이 **빈칸 채우는**  방식으로 복습 
 │   ├── pages       # NextJS 페이지
 │   ├── server      # DI container & domain services
 │   ├── styles      # style file (.css)
-│   ├── tests       # test
 │   └── types       # typescript declaration type
+├── tests   # test
+│   ├── components  # 컴포넌트 단위 테스트
+│   ├── hooks       # Hook 단위 테스트
+│   ├── lib         # 유틸 함수 단위 테스트
+└── └── http        # HTTP 요청 테스트
+
 ```
 
 
