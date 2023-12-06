@@ -6,7 +6,7 @@ import { QuizInputForm } from '@/components/common/quiz-input-form'
 
 import { Quiz, QuizSchema } from '@/models/quiz'
 
-import { delay } from '../delay'
+import { delay } from '../../delay'
 
 describe('QuizInputForm Component', () => {
   let mockQuiz: Quiz
