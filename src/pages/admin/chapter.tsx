@@ -47,17 +47,15 @@ export const getServerSideProps = (async (context) => {
   if (session?.user) {
     const role = await userService.getRole(session?.user.id)
 
-    if (role !== 'Admin') {
-      return {
-        props: {},
-        redirect: {
-          destination: '/',
-        },
-      }
+    if (role === 'Admin') {
+      return { props: {} }
     }
   }
 
   return {
     props: {},
+    redirect: {
+      destination: '/',
+    },
   }
 }) satisfies GetServerSideProps<{}>
