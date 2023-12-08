@@ -2,11 +2,13 @@ import { PrismaClient } from '@prisma/client'
 import { container } from 'tsyringe'
 
 import { ChapterService } from '@/server/services/chapter.service'
+import { QuizService } from '@/server/services/quiz.service'
 
 import { Context, MockContext, createMockContext } from '../context'
 
 let mockCtx: MockContext
 let ctx: Context
+let quizService: QuizService
 let chapterService: ChapterService
 
 beforeEach(() => {
@@ -20,11 +22,12 @@ beforeEach(() => {
     useValue: mockCtx.prisma,
   })
 
+  quizService = container.createChildContainer().resolve(QuizService)
   chapterService = container.createChildContainer().resolve(ChapterService)
 })
 
-describe('ChapterService Test', () => {
-  it('create chapter', async () => {
+describe('QuizService Test', () => {
+  it('create quiz', async () => {
     // ARRANGE
     const chapter = {
       id: '1',
@@ -32,23 +35,33 @@ describe('ChapterService Test', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     }
-    mockCtx.prisma.chapter.create.mockResolvedValue(chapter)
-
-    // ACT
-    let allChapters = await chapterService.getAllChapters()
-    // ASSERT
-    expect(allChapters).toBe(undefined)
-
-    // ACT
-    const newchapter = await chapterService.createChapter(chapter.chapterName)
-    // ASSERT
-    expect(newchapter.chapterName).toEqual('first-chapter')
+    mockCtx.prisma.chapter.findMany.mockResolvedValue([chapter])
+    const quiz = {
+      id: '1',
+      chapterId: '1',
+      priority: 50000,
+      quiz: '',
+      answer: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
 
     // ARRANGE
-    mockCtx.prisma.chapter.findMany.mockResolvedValue([chapter])
+    mockCtx.prisma.quiz.create.mockResolvedValue(quiz)
     // ACT
-    allChapters = await chapterService.getAllChapters()
+    const newQuiz = await quizService.createQuiz(
+      quiz.chapterId,
+      quiz.quiz,
+      quiz.answer
+    )
     // ASSERT
-    expect(allChapters).toHaveLength(1)
+    expect(newQuiz).toEqual(quiz)
+
+    // ARRANGE
+    mockCtx.prisma.quiz.findMany.mockResolvedValue([quiz])
+    // ACT
+    const allQuiz = await quizService.getAllQuiz()
+    // ASSERT
+    expect(allQuiz).toHaveLength(1)
   })
 })
