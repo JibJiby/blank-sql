@@ -1,10 +1,15 @@
 /* eslint-disable react/display-name */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 
-import { useSingleQuizQuery } from '@/hooks/query/quiz/use-single-quiz-query'
+import { api } from '@/lib/axios'
 
-describe('Test useSingleQuizQuery Hook', () => {
+import { useAllQuizQuery } from '@/hooks/query/quiz/use-all-quiz-query'
+
+const mockAPI = new MockAdapter(api)
+
+describe('Test useAllQuizQuery Hook', () => {
   let createWrapper: () => ({
     children,
   }: {
@@ -19,6 +24,11 @@ describe('Test useSingleQuizQuery Hook', () => {
   beforeEach(() => {
     createWrapper = () => {
       const queryClient = new QueryClient({
+        logger: {
+          log: console.log,
+          warn: console.warn,
+          error: console.error,
+        },
         defaultOptions: {
           queries: {
             retry: false,
@@ -32,23 +42,26 @@ describe('Test useSingleQuizQuery Hook', () => {
       )
     }
   })
+  afterEach(() => {
+    mockAPI.resetHandlers()
+  })
 
   /**
    * -----------------------------------------------------
    * Test Case
    * -----------------------------------------------------
    */
-  it('useSingleQuizQuery 의 initialData 는 undefined 입니다', async () => {
+  it('useAllQuizQuery 는 /quiz 로 요청한 응답값을 data 로 사용한다 ', async () => {
     // ARRANGE
-    const mockQuizId = ''
-    const { result } = renderHook(() => useSingleQuizQuery(mockQuizId), {
-      wrapper: createWrapper(),
-    })
+    mockAPI.onGet('/quiz').reply(200, [])
 
     // ACT
-    await waitFor(() => result.current.isSuccess)
+    const { result } = renderHook(() => useAllQuizQuery(), {
+      wrapper: createWrapper(),
+    })
+    await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     // ASSERT
-    expect(result.current.data).toBeUndefined()
+    expect(result.current.data).toEqual([])
   })
 })
