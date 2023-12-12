@@ -3,8 +3,11 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import { Prisma } from '@prisma/client'
+
+import { cn } from '@/lib/utils'
+
 import BaseLayout from '@/layouts/base-layout'
-import { Chapter } from '@/models/chapter'
 import { chapterService } from '@/server/services'
 
 export default function ChapterQuizPage({
@@ -13,20 +16,32 @@ export default function ChapterQuizPage({
   const router = useRouter()
   const chapters = JSON.parse(data)
 
-  const renderChapterList = (chapterList: Chapter[]) => {
+  const renderChapterList = (chapterList: Prisma.ChapterSelect[]) => {
     if (!chapterList.length) {
       return
     }
 
-    return chapterList.map((chapter) => (
-      <Link
-        key={`chapter-${chapter.id}`}
-        href={router.asPath + `/${chapter.id}`}
-        className="w-full px-4 py-6 font-semibold text-center transition-all ease-in border rounded-md cursor-pointer hover:bg-secondary"
-      >
-        {chapter.chapterName}
-      </Link>
-    ))
+    const commonCN =
+      'w-full px-4 py-6 font-semibold text-center transition-all ease-in border rounded-md'
+
+    return chapterList.map((chapter) =>
+      chapter.isActive ? (
+        <Link
+          key={`chapter-${chapter.id}`}
+          href={router.asPath + `/${chapter.id}`}
+          className={cn(commonCN, 'cursor-pointer hover:bg-secondary')}
+        >
+          {chapter.chapterName}
+        </Link>
+      ) : (
+        <div
+          key={`chapter-${chapter.id}`}
+          className={cn(commonCN, 'cursor-not-allowed opacity-50')}
+        >
+          {chapter.chapterName}
+        </div>
+      )
+    )
   }
 
   return (
