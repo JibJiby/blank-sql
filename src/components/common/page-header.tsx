@@ -56,6 +56,15 @@ export function PageHeader() {
               text={menu.text}
             />
           ))}
+          <Link
+            href="/pro"
+            className={cn(
+              buttonVariants({ variant: 'default' }),
+              'opacity-60 hover:opacity-100 m-0 font-semibold'
+            )}
+          >
+            PRO 버전
+          </Link>
         </nav>
       </div>
       <div className="flex gap-x-4">
