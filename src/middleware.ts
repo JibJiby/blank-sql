@@ -44,5 +44,5 @@ export default withAuth(
 )
 
 export const config = {
-  matcher: ['/', '/api(.*)'],
+  matcher: ['/', '/api(.*)', '/chapter/:chapterId*', '/single/:quizId*'],
 }
