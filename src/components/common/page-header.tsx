@@ -56,7 +56,8 @@ export function PageHeader() {
               text={menu.text}
             />
           ))}
-          <Link
+          {/* TODO: 추후 추가 */}
+          {/* <Link
             href="/pro"
             className={cn(
               buttonVariants({ variant: 'default' }),
@@ -64,7 +65,7 @@ export function PageHeader() {
             )}
           >
             PRO 버전
-          </Link>
+          </Link> */}
         </nav>
       </div>
       <div className="flex gap-x-4">
