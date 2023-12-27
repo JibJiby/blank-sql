@@ -40,6 +40,9 @@ const menuList = [
   { href: '/chapter', text: '챕터별 풀기' },
 ]
 
+const DOWNLOAD_FILE_URL =
+  'https://drive.google.com/drive/folders/1QfhZcJav_Fn_d_UK6AkAuG-_fR5TAmF_?usp=sharing'
+
 export function PageHeader() {
   return (
     <header
@@ -56,16 +59,17 @@ export function PageHeader() {
               text={menu.text}
             />
           ))}
-          {/* TODO: 추후 추가 */}
-          {/* <Link
-            href="/pro"
+          <a
+            target="_blank"
+            href={DOWNLOAD_FILE_URL}
+            rel="noopener noreferrer"
             className={cn(
               buttonVariants({ variant: 'default' }),
               'opacity-60 hover:opacity-100 m-0 font-semibold'
             )}
           >
-            PRO 버전
-          </Link> */}
+            자료 다운로드
+          </a>
         </nav>
       </div>
       <div className="flex gap-x-4">
