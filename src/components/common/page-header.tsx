@@ -59,7 +59,7 @@ export function PageHeader() {
               text={menu.text}
             />
           ))}
-          <a
+          <Link
             target="_blank"
             href={DOWNLOAD_FILE_URL}
             rel="noopener noreferrer"
@@ -69,7 +69,7 @@ export function PageHeader() {
             )}
           >
             자료 다운로드
-          </a>
+          </Link>
         </nav>
       </div>
       <div className="flex gap-x-4">
